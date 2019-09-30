@@ -1,0 +1,52 @@
+<html>
+<head>
+  <title>Accessible Menu Demo</title>
+  <link rel="stylesheet" type="text/css" href="/demo/demo.css"/>
+</head>
+<body>
+
+  <nav class="navMenu">
+    <h1 class="title">Company Name</h1>
+    <a class="menuItem" href="">Home</a>
+    <span class="submenuContainer">
+      <a class="menuItem">About</a>
+      <div class="submenu" data-name="About">
+        <a class="menuItem" href="/overview">Overview</a>
+        <span class="submenuContainer">
+          <a class="menuItem">More</a>
+          <div class="submenu" data-name="More1">
+            <a class="menuItem" href="/something">Something</a>
+          </div>
+        </span>
+        <span class="submenuContainer">
+          <a class="menuItem">More</a>
+          <div class="submenu" data-name="More2">
+            <a class="menuItem" href="/something">Something</a>
+          </div>
+        </span>
+      </div>
+    </span>
+    <span class="submenuContainer">
+        <a class="menuItem">About</a>
+        <div class="submenu" data-name="About">
+          <a class="menuItem" href="/overview">Overview</a>
+          <span class="submenuContainer">
+            <a class="menuItem">More</a>
+            <div class="submenu" data-name="More1">
+              <a class="menuItem" href="/something">Something</a>
+            </div>
+          </span>
+          <span class="submenuContainer">
+            <a class="menuItem">More</a>
+            <div class="submenu" data-name="More2">
+              <a class="menuItem" href="/something">Something</a>
+            </div>
+          </span>
+        </div>
+      </span>
+    <a class="menuItem" href="">Demo</a>
+  </nav>
+
+  <script src="/demo/demo.js" type="module"></script>
+</body>
+</html>

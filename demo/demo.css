@@ -1,0 +1,59 @@
+.navMenu {
+  font-size: 0;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.submenuContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.submenuContainer:hover > .submenu,
+.submenu[aria-hidden="false"] {
+  display: inline-block;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.submenu .submenu {
+  top: 0;
+  left: 100%;
+}
+
+.menuItem {
+  background-color: gray;
+  color: white;
+  display: inline-block;
+  font-size: 18px;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.menuItem:hover,
+.menuItem:focus {
+  outline: none;
+  background-color: darkgray;
+}
+
+.submenu .menuItem {
+  width: 100px;
+}
+
+.menuItem[aria-haspopup]::after {
+  content: ' \25BE';
+  display: 'inline-block';
+  line-height: 1em;
+}
+
+.submenu .menuItem[aria-haspopup]::after {
+  content: ' \25B8'
+}
