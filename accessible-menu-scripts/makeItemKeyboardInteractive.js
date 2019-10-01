@@ -53,9 +53,11 @@ export default (item, options) => {
     // check if the key pressed should collapse all menus
     const shouldCollapse = collapseKeys.includes(event.key)
     if (shouldCollapse) {
-      const allItems = menuObject.getAllItems()
-      menuObject.anySubmenuIsExpanded = false
-      return allItems.forEach(currentItem =>
+      const allItems = menuObject.getAllItems(menuParentMenu)
+      const expandedItems = allItems.filter(
+        i => i.element.getAttribute('aria-expanded') === 'true')
+        menuObject.anySubmenuIsExpanded = false
+      return expandedItems.forEach(currentItem =>
         currentItem.collapse && currentItem.collapse('current'))
     }
   })
