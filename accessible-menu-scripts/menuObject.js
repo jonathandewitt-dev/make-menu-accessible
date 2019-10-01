@@ -69,5 +69,5 @@ export default {
       if (isChildOfMenu) allItems.push(...menu.items)
       return allItems
     }, [])
-  }
+  },
 }
