@@ -45,7 +45,7 @@ export default (item, options) => {
         const elementText = i.element.textContent.toLowerCase()
         return elementText.startsWith(menuObject.filterText)
       })
-      filteredItem.focus('current')
+      if (filteredItem) filteredItem.focus('current')
 
       // clear the text one second after the user stops typing
       clearTimeout(menuObject.filterTimeout)
