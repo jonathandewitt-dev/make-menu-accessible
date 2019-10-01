@@ -6,6 +6,8 @@ export default {
     item: null,
     index: 0,
   },
+  filterText: '',
+  filterTimeout: null,
   addMenu(element, parentItem, parentMenu) {
     const options = parentItem ?
       getMenuOptions(element, {

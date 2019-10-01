@@ -37,6 +37,21 @@ export default (item, options) => {
       focusFirst ? 'first' : focusLast ? 'last' : null
     const focusMethod = item.collapse ? 'collapse' : 'focus'
     if (focusPref) return item[focusMethod](focusPref)
+
+    // check if the key pressed should jump to a particular item
+    if (event.key.length === 1) {
+      menuObject.filterText += event.key
+      const filteredItem = itemParentMenu.items.find(i => {
+        const elementText = i.element.textContent.toLowerCase()
+        return elementText.startsWith(menuObject.filterText)
+      })
+      filteredItem.focus('current')
+
+      // clear the text one second after the user stops typing
+      clearTimeout(menuObject.filterTimeout)
+      menuObject.filterTimeout = setTimeout(
+        () => menuObject.filterText = '', 500)
+    }
     
     // check if the key pressed should expand a menu (or else collapse)
     const expandFirst = expandKeys.firstKeys.includes(event.key)
