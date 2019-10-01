@@ -50,12 +50,13 @@ export default (item, options) => {
         parentItem && parentItem.collapse(collapsePref)
     }
 
-    // check if the key pressed should collapse a menu
+    // check if the key pressed should collapse all menus
     const shouldCollapse = collapseKeys.includes(event.key)
-    const itemToCollapse = parentItem || item
     if (shouldCollapse) {
+      const allItems = menuObject.getAllItems()
       menuObject.anySubmenuIsExpanded = false
-      return itemToCollapse && itemToCollapse.collapse('current')
+      return allItems.forEach(currentItem =>
+        currentItem.collapse && currentItem.collapse('current'))
     }
   })
 }

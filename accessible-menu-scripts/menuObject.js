@@ -55,5 +55,11 @@ export default {
     itemWithMenu.attachedMenu = this.addMenu(submenu, itemWithMenu, parentMenu)
   
     parentMenu.items.push(itemWithMenu)
+  },
+  getAllItems() {
+    return this.menus.reduce((allItems, menu) => {
+      allItems.push(...menu.items)
+      return allItems
+    }, [])
   }
 }
