@@ -4,6 +4,10 @@ export const defaultKeys = ['Enter', 'Spacebar', ' ']
 // array of keys for collapsing
 export const collapseKeys = ['Esc', 'Escape']
 
+// arrays of keys for focusing on the first or last item
+export const firstKeys = ['Home', 'PageUp']
+export const lastKeys = ['End', 'PageDown']
+
 // object for mapping keys to focus actions
 export const focusKeyMap = {
   horizontal: {

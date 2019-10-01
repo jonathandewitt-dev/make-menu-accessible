@@ -1,4 +1,4 @@
-import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys} from './keyMaps.js'
+import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys, firstKeys, lastKeys} from './keyMaps.js'
 import menuObject from './menuObject.js'
 
 // function for enabling keyboard navigation on a single item
@@ -10,7 +10,7 @@ export default (item, options) => {
   const parentMenuOptions = menuParentMenu && menuParentMenu.options
   const {parentItem} = itemParentMenu
   const {nextKeys, prevKeys} = focusKeyMap[layout]
-  const {firstKeys, lastKeys} = expandKeyMap[alignment]
+  const expandKeys = expandKeyMap[alignment]
   const collapseKeyMap = parentMenuOptions ?
     focusKeyMap[parentMenuOptions.layout] :
     {nextKeys: [], prevKeys: []}
@@ -30,13 +30,17 @@ export default (item, options) => {
     // check if the key pressed should change the focus
     const focusNext = nextKeys.includes(event.key)
     const focusPrev = prevKeys.includes(event.key)
-    const focusPref = focusNext ? 'next' : focusPrev ? 'prev' : null
+    const focusFirst = firstKeys.includes(event.key)
+    const focusLast = lastKeys.includes(event.key)
+    const focusPref =
+      focusNext ? 'next' : focusPrev ? 'prev' :
+      focusFirst ? 'first' : focusLast ? 'last' : null
     const focusMethod = item.collapse ? 'collapse' : 'focus'
     if (focusPref) return item[focusMethod](focusPref)
     
     // check if the key pressed should expand a menu (or else collapse)
-    const expandFirst = firstKeys.includes(event.key)
-    const expandLast = lastKeys.includes(event.key)
+    const expandFirst = expandKeys.firstKeys.includes(event.key)
+    const expandLast = expandKeys.lastKeys.includes(event.key)
     const expandPref = expandFirst ? 'first' : expandLast ? 'last' : null
     const collapseNext = collapseKeyMap.nextKeys.includes(event.key)
     const collapsePrev = collapseKeyMap.prevKeys.includes(event.key)
