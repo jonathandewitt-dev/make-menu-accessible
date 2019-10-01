@@ -6,7 +6,6 @@ export default {
     item: null,
     index: 0,
   },
-  anySubmenuIsExpanded: false,
   addMenu(element, parentItem, parentMenu) {
     const options = parentItem ?
       getMenuOptions(element, {
@@ -21,6 +20,7 @@ export default {
       parentItem,
       parentMenu,
       items: [],
+      anySubmenuIsExpanded: false,
     }
 
     this.menus.push(menu)

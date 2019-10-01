@@ -44,7 +44,7 @@ export default (item, options) => {
     
     // expand or collapse as dictated above
     if (expandPref) {
-      menuObject.anySubmenuIsExpanded = true
+      if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = true
       return item.expand ?
         item.expand(expandPref) :
         parentItem && parentItem.collapse(collapsePref)
@@ -56,7 +56,7 @@ export default (item, options) => {
       const allItems = menuObject.getAllItems(menuParentMenu)
       const expandedItems = allItems.filter(
         i => i.element.getAttribute('aria-expanded') === 'true')
-        menuObject.anySubmenuIsExpanded = false
+      if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = false
       return expandedItems.forEach(currentItem =>
         currentItem.collapse && currentItem.collapse('current'))
     }

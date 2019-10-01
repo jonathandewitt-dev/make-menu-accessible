@@ -24,7 +24,7 @@ export const getItemsInScope = (scopedElement, selector, options) => {
 
 // focus on the next element
 export const focus = (item, pref, useItemIndex) => {
-  const {items} = item.parentMenu
+  const {items, anySubmenuIsExpanded} = item.parentMenu
   const itemIndex = items.findIndex(i => i === item)
   const activeIndex = useItemIndex ?
     itemIndex :
@@ -46,7 +46,6 @@ export const focus = (item, pref, useItemIndex) => {
   }
 
   // expand if it has a submenu and a submenu was already expanded
-  const {anySubmenuIsExpanded} = menuObject
   if (anySubmenuIsExpanded && itemToFocus.expand) itemToFocus.expand('none')
 }
 
