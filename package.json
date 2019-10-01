@@ -2,8 +2,9 @@
   "name": "accessible-menu",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "accessible-menu-scripts/makeMenuAccessible.js",
   "scripts": {
+    "start-demo": "node demoServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

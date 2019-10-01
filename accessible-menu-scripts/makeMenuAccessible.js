@@ -1,26 +1,68 @@
-import {getMenuOptions, getItemsInScope} from './utilities.js'
-import makeMenuItemAccessible from './makeMenuItemAccessible.js'
-import makeSubmenuAccessible from './makeSubmenuAccessible.js'
+import menuObject from './menuObject.js'
+import makeItemAccessible from './makeItemAccessible.js'
+import makeItemKeyboardInteractive from './makeItemKeyboardInteractive.js'
 
-export default (menuElement, menuOptions) => {
-  const options = menuOptions || getMenuOptions(menuElement)
-  const {name, parentItem} = options
-  
-  // Make sure the menu is labelled and has a role
-  const title = menuElement.querySelector('h1, h2, h3, h4, h5, h6')
-  const menuName = name || (title ? title.textContent : 'Site Menu')
-  menuElement.setAttribute('aria-label', menuName)
-  menuElement.setAttribute('role', 'menubar')
+const addLabelTo = menu => {
+  const {element, name} = menu
+  const title = element.querySelector('h1, h2, h3, h4, h5, h6')
+
+  // make sure the id assigned to this element is unique
+  let idIndex = 0
+  const setUniqueId = el => {
+    if (!el || el.id) return el && el.id
+    const idName = el.textContent.replace(' ', '')
+    const id = !idIndex ? idName : `${idName}_${idIndex}`
+    const elExists = !!document.querySelector(`#${id}`)
+    return el.id = elExists ? setUniqueId(idName) : id
+  }
+
+  // prioritize the label as follows:
+  // 1. user defined name, 2. any nested heading, 3. default fallback
+  const label = {
+    label: name || 'Site Menu',
+    labelledBy: setUniqueId(title),
+  }
+  const key = name ? 'label' : title ? 'labelledby' : 'label'
+  element.setAttribute(`aria-${key}`, label[key])
+}
+
+const makeMenuAccessible = menu => {
+  const {element, items, parentItem} = menu
+  const {options} = menu
+
+  // Make sure the menu is labelled
+  addLabelTo(menu)
+
+  // give the current menu a role
+  const role = parentItem ? 'menu' : 'menubar'
+  element.setAttribute('role', role)
   
   // make the items accessible
-  const itemsInScope = getItemsInScope(menuElement, options)
-  itemsInScope.forEach(item => {
-    const itemContext = {itemsInScope, item, parentItem}
-    makeMenuItemAccessible(itemContext, options)
+  items.forEach(item => {
+    makeItemAccessible(item)
+    makeItemKeyboardInteractive(item, options)
   })
+}
+
+export default element => {
+  const menu = menuObject.addMenu(element)
+  const {itemSelector} = menu.options
+  const {menus} = menuObject
   
-  // make submenus accessible too
-  const directSubmenus = getItemsInScope(menuElement, options, 'submenus')
-  directSubmenus.forEach(submenu => makeSubmenuAccessible(menuElement, submenu, options))
-  
+  // add attributes and keyboard functionality to this menu and all its submenus
+  menus.forEach(currentMenu => makeMenuAccessible(currentMenu))
+
+  // make any window click collapse all menus
+  window.addEventListener('click', event => {
+    if (event.target.matches(itemSelector)) return
+    const allItems = menuObject.menus.reduce((items, currentMenu) => {
+      items.push(...currentMenu.items)
+      return items
+    }, [])
+    menuObject.activeMenuItem = {
+      item: allItems[0],
+      index: 0,
+    }
+    allItems.forEach(item => item.collapse && item.collapse('none'))
+  })
 }

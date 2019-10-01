@@ -1,3 +1,5 @@
+import menuObject from './menuObject.js'
+
 // get these options from the data attributes or fall back on defaults
 export const getMenuOptions = (menuElement, defaults = {}) =>
   Object.assign({
@@ -8,38 +10,59 @@ export const getMenuOptions = (menuElement, defaults = {}) =>
   }, defaults, menuElement.dataset)
 
 // get only the items that are not nested in submenus, relative to the current scope
-export const getItemsInScope = (scopedElement, menuOptions, type) => {
-  const {itemSelector, submenuSelector} = menuOptions
-  const allItems = [...scopedElement.querySelectorAll(itemSelector)]
+export const getItemsInScope = (scopedElement, selector, options) => {
+  const {submenuSelector} = options
+  const allItems = [...scopedElement.querySelectorAll(selector)]
   const allSubmenus = [...scopedElement.querySelectorAll(submenuSelector)]
-  
-  const filterSelector = type === 'submenus' ? submenuSelector : itemSelector
-  const itemsToFilter = type === 'submenus' ? allSubmenus : allItems
-  const filteredItems = allSubmenus.reduce((items, submenu) => {
-      const currentItems = [...submenu.querySelectorAll(filterSelector)]
-      items.push(...currentItems)
-      return items
-    }, [])
-  
-  return itemsToFilter.filter(item => !filteredItems.includes(item))
+  const itemsToFilterOut = allSubmenus.reduce((items, submenu) => {
+    const itemsBeyondScope = [...submenu.querySelectorAll(selector)]
+    items.push(...itemsBeyondScope)
+    return items
+  }, [])
+  return allItems.filter(item => !itemsToFilterOut.includes(item))
 }
 
 // focus on the next element
-export const focus = (itemsInScope, pref, focusPref = {}) => {
-  const {onIndex, fromIndex} = focusPref
-  const currentIndex = fromIndex || itemsInScope
-    .findIndex(i => i === document.activeElement)
-
-  // determine the index of the next item to focus on
-  if (onIndex) return itemsInScope[onIndex].focus()
-  const lastIndex = itemsInScope.length - 1
-  const prevIndex = currentIndex > 0 ? currentIndex - 1 : lastIndex
-  const nextIndex = currentIndex < lastIndex ? currentIndex + 1 : 0
+export const focus = (item, pref, useItemIndex) => {
+  const {items} = item.parentMenu
+  const itemIndex = items.findIndex(i => i === item)
+  const activeIndex = useItemIndex ?
+    itemIndex :
+    menuObject.activeMenuItem.index
+  const lastIndex = items.length - 1
+  const prevIndex = activeIndex > 0 ? activeIndex - 1 : lastIndex
+  const nextIndex = activeIndex < lastIndex ? activeIndex + 1 : 0
   const focusIndex =
     pref === 'prev' ? prevIndex : 
     pref === 'last' ? lastIndex :
     pref === 'first' ? 0 :
+    pref === 'current' ? itemIndex :
     nextIndex // next by default
-  itemsInScope[focusIndex].focus()
+  const itemToFocus = items[focusIndex]
+  itemToFocus.element.focus()
+  menuObject.activeMenuItem = {
+    item: itemToFocus,
+    index: focusIndex,
+  }
+
+  // expand if it has a submenu and a submenu was already expanded
+  const {anySubmenuIsExpanded} = menuObject
+  if (anySubmenuIsExpanded && itemToFocus.expand) itemToFocus.expand('none')
 }
 
+// expand or collapse a menu given its parent item
+export const toggleExpanded = (item, pref, shouldExpand) => {
+  const {element, attachedMenu} = item
+  
+  const itemsInSubmenu = attachedMenu.items
+  const tabindex = shouldExpand ? '0' : '-1'
+  itemsInSubmenu.forEach(submenuItem =>
+    submenuItem.element.setAttribute('tabindex', String(tabindex)))
+  element.setAttribute('aria-expanded', String(shouldExpand))
+  attachedMenu.element.setAttribute('aria-hidden', String(!shouldExpand))
+
+  // determine which item to focus, if any
+  if (pref === 'none') return
+  if (shouldExpand) return focus(itemsInSubmenu[0], pref)
+  focus(item, pref, true)
+}

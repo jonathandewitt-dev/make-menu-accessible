@@ -1,23 +1,28 @@
 import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys} from './keyMaps.js'
-import {focus} from './utilities.js'
-
-let anySubmenuIsExpanded = false
+import menuObject from './menuObject.js'
 
 // function for enabling keyboard navigation on a single item
-export default (itemContext, options) => {
-  const {itemsInScope, item, parentItem} = itemContext
-  const {layout, alignment, itemSelector, parentMenuOptions} = options
+export default (item, options) => {
+  const {element} = item
+  const {parentMenu} = item.parentMenu
+  const {layout, alignment} = options
+  const parentMenuOptions = parentMenu && parentMenu.options
+  const {parentItem} = item.parentMenu
   const {nextKeys, prevKeys} = focusKeyMap[layout]
   const {firstKeys, lastKeys} = expandKeyMap[alignment]
   const collapseKeyMap = parentMenuOptions ?
     focusKeyMap[parentMenuOptions.layout] :
     {nextKeys: [], prevKeys: []}
 
+  // set the default tabindex
+  element.setAttribute('tabindex', '0')
+
   // determine the action to take based on the key pressed
-  item.addEventListener('keydown', event => {
+  element.addEventListener('keydown', event => {
+    const {activeMenuItem, anySubmenuIsExpanded} = menuObject
 
     // check if the key pressed should use default behavior
-    const link = item.href ? item : item.querySelector('a')
+    const link = element.href ? element : element.querySelector('a')
     const shouldUseDefault = link && link.href && defaultKeys.includes(event.key)
     if (shouldUseDefault) return
     event.preventDefault()
@@ -26,13 +31,8 @@ export default (itemContext, options) => {
     const focusNext = nextKeys.includes(event.key)
     const focusPrev = prevKeys.includes(event.key)
     const focusPref = focusNext ? 'next' : focusPrev ? 'prev' : null
-    if (focusPref) {
-      if (item.collapse) item.collapse()
-      focus(itemsInScope, focusPref)
-      const activeEl = document.activeElement
-      const isExpandable = activeEl && activeEl.expand
-      return anySubmenuIsExpanded && isExpandable && activeEl.expand('none')
-    }
+    const focusMethod = item.collapse ? 'collapse' : 'focus'
+    if (focusPref) return item[focusMethod](focusPref)
     
     // check if the key pressed should expand a menu (or else collapse)
     const expandFirst = firstKeys.includes(event.key)
@@ -40,25 +40,22 @@ export default (itemContext, options) => {
     const expandPref = expandFirst ? 'first' : expandLast ? 'last' : null
     const collapseNext = collapseKeyMap.nextKeys.includes(event.key)
     const collapsePrev = collapseKeyMap.prevKeys.includes(event.key)
-    const collapsePref = collapseNext ? 'next' : collapsePrev ? 'prev' : null
-    anySubmenuIsExpanded = anySubmenuIsExpanded || !!expandPref
+    const collapsePref = collapseNext ? 'next' : collapsePrev ? 'prev' : 'current'
     
     // expand or collapse as dictated above
-    if (expandPref) return item.expand ?
-      item.expand(expandPref) :
-      parentItem && parentItem.collapse(collapsePref)
+    if (expandPref) {
+      menuObject.anySubmenuIsExpanded = true
+      return item.expand ?
+        item.expand(expandPref) :
+        parentItem && parentItem.collapse(collapsePref)
+    }
 
     // check if the key pressed should collapse a menu
-    const collapse = collapseKeys.includes(event.key)
+    const shouldCollapse = collapseKeys.includes(event.key)
     const itemToCollapse = parentItem || item
-    anySubmenuIsExpanded = !collapse
-    if (collapse) return itemToCollapse && itemToCollapse.collapse()
-  })
-  
-  // make any window click collapse all menus
-  window.addEventListener('click', event => {
-    if (event.target.matches(itemSelector)) return
-    const allItems = document.querySelectorAll(itemSelector)
-    allItems.forEach(item => item.collapse && item.collapse('none'))
+    if (shouldCollapse) {
+      menuObject.anySubmenuIsExpanded = false
+      return itemToCollapse && itemToCollapse.collapse('current')
+    }
   })
 }
