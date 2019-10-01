@@ -4,10 +4,11 @@ import menuObject from './menuObject.js'
 // function for enabling keyboard navigation on a single item
 export default (item, options) => {
   const {element} = item
-  const {parentMenu} = item.parentMenu
+  const itemParentMenu = item.parentMenu
+  const menuParentMenu = itemParentMenu.parentMenu
   const {layout, alignment} = options
-  const parentMenuOptions = parentMenu && parentMenu.options
-  const {parentItem} = item.parentMenu
+  const parentMenuOptions = menuParentMenu && menuParentMenu.options
+  const {parentItem} = itemParentMenu
   const {nextKeys, prevKeys} = focusKeyMap[layout]
   const {firstKeys, lastKeys} = expandKeyMap[alignment]
   const collapseKeyMap = parentMenuOptions ?
@@ -19,7 +20,6 @@ export default (item, options) => {
 
   // determine the action to take based on the key pressed
   element.addEventListener('keydown', event => {
-    const {activeMenuItem, anySubmenuIsExpanded} = menuObject
 
     // check if the key pressed should use default behavior
     const link = element.href ? element : element.querySelector('a')
