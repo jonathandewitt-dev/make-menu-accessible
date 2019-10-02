@@ -15,14 +15,14 @@ export default (item, options, keydownCallback) => {
     focusKeyMap[parentMenuOptions.layout] :
     {nextKeys: [], prevKeys: []}
 
-  const collapseAll = withFocus => {
+  const collapseAll = (withFocus = true) => {
     const allItems = menuObject.getAllItems(menuParentMenu)
     const expandedItems = allItems.filter(
       i => i.element.getAttribute('aria-expanded') === 'true')
     if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = false
     if (itemParentMenu) itemParentMenu.anySubmenuIsExpanded = false
     expandedItems.forEach(currentItem =>
-      currentItem.collapse && currentItem.collapse('current', false))
+      currentItem.collapse && currentItem.collapse('current', withFocus))
   }
 
   // determine the action to take based on the key pressed
@@ -35,7 +35,7 @@ export default (item, options, keydownCallback) => {
 
     // check if the key pressed should use default behavior
     const shouldUseDefault = element.href && defaultKeys.includes(event.key)
-    if (shouldUseDefault) return event.key === 'Tab' && collapseAll()
+    if (shouldUseDefault) return event.key === 'Tab' && collapseAll(false)
     event.preventDefault()
     event.stopPropagation()
 

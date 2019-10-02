@@ -6,14 +6,14 @@
 }
 
 .mainMenu,
-.submenu,
-.menuItem {
+.customSubmenu,
+.customItem {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.menuItem > a {
+.customItem > a {
   background-color: gray;
   box-sizing: border-box;
   color: white;
@@ -23,17 +23,17 @@
   width: 100%;
 }
 
-.menuItem > a:hover,
-.menuItem > a:focus {
+.customItem > a:hover,
+.customItem > a:focus {
   background-color: darkgray;
   color: white;
 }
 
-.menuItem a:focus {
+.customItem a:focus {
   outline: 1px solid black;
 }
 
-.submenu {
+.customSubmenu {
   display: none;
   position: absolute;
   top: 100%;
@@ -41,32 +41,32 @@
   min-width: 100%;
 }
 
-.submenu .submenu {
+.customSubmenu .customSubmenu {
   top: 0;
   left: 100%;
 }
 
-.menuItem {
+.customItem {
   display: inline-block;
   position: relative;
 }
 
-.submenu .menuItem {
+.customSubmenu .customItem {
   display: block;
   width: 100%;
   white-space: nowrap;
 }
 
-.menuItem:hover > .submenu,
-.submenu[aria-hidden="false"] {
+.customItem:hover > .customSubmenu,
+.customSubmenu[aria-hidden="false"] {
   display: block;
 }
 
-.menuItem > a[aria-haspopup="true"]::after {
+.customItem > a[aria-haspopup="true"]::after {
   content: ' \25BE';
   line-height: 1em;
 }
 
-.submenu .menuItem > a[aria-haspopup="true"]::after {
+.customSubmenu .customItem > a[aria-haspopup="true"]::after {
   content: ' \25B8';
 }
