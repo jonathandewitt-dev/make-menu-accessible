@@ -26,7 +26,7 @@ const addLabelTo = menu => {
   element.setAttribute(`aria-${key}`, label[key])
 }
 
-const makeEachMenuAccessible = menu => {
+const makeEachMenuAccessible = (menu, keydownCallback) => {
   const {element, items, parentItem} = menu
   const {options} = menu
 
@@ -40,17 +40,17 @@ const makeEachMenuAccessible = menu => {
   // make the items accessible
   items.forEach(item => {
     makeItemAccessible(item)
-    makeItemKeyboardInteractive(item, options)
+    makeItemKeyboardInteractive(item, options, keydownCallback)
   })
 }
 
-export default element => {
+export default (element, keydownCallback = () => {}) => {
   const menu = menuObject.addMenu(element)
   const {itemSelector} = menu.options
   const {menus} = menuObject
   
   // add attributes and keyboard functionality to this menu and all its submenus
-  menus.forEach(currentMenu => makeEachMenuAccessible(currentMenu))
+  menus.forEach(currentMenu => makeEachMenuAccessible(currentMenu, keydownCallback))
 
   // make any window click collapse all menus
   window.addEventListener('click', event => {

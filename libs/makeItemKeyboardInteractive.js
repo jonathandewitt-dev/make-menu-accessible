@@ -2,7 +2,7 @@ import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys, firstKeys, lastKey
 import menuObject from './menuObject.js'
 
 // function for enabling keyboard navigation on a single item
-export default (item, options) => {
+export default (item, options, keydownCallback) => {
   const {element} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
@@ -21,11 +21,15 @@ export default (item, options) => {
   // determine the action to take based on the key pressed
   element.addEventListener('keydown', event => {
 
+    // run the user defined event callback
+    keydownCallback(event)
+
     // check if the key pressed should use default behavior
     const link = element.href ? element : element.querySelector('a')
     const shouldUseDefault = link && link.href && defaultKeys.includes(event.key)
     if (shouldUseDefault) return
     event.preventDefault()
+    event.stopPropagation()
 
     // check if the key pressed should change the focus
     const focusNext = nextKeys.includes(event.key)
