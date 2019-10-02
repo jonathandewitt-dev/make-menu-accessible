@@ -84,3 +84,23 @@ So you know everything needs a aria-label, right?  Well, this function again tri
   <!-- ... -->
 </nav>
 ```
+
+THE KEYDOWN EVENT
+===
+This function uses `event.stopPropagation()` on the `'keydown'` event in order to run properly, avoiding multiple triggers on all the element's parents.  If you need to add another callback to the `'keydown'` event on any menu item, you can use the second argument of the main function to feed it your custom callback.  If you give your callback a return value of false, it will not run the rest of the callback set by this package.  If you don't provide any return value, it defaults to true.
+
+```js
+import makeMenuAccessible from 'make-menu-accessible'
+
+const menuElement = document.querySelector('.menu')
+
+/* ... */
+
+makeMenuAccessible(menuElement, event => {
+  event.preventDefault()
+  if (someCondition) {
+    alert('My custom "keydown" callback')
+    return false
+  }
+})
+```

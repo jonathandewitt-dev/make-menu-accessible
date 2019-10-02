@@ -22,7 +22,9 @@ export default (item, options, keydownCallback) => {
   element.addEventListener('keydown', event => {
 
     // run the user defined event callback
-    keydownCallback(event)
+    const callbackReturnVal = keydownCallback(event)
+    const continueKeydown = callbackReturnVal === undefined ? true : callbackReturnVal
+    if (!continueKeydown) return
 
     // check if the key pressed should use default behavior
     const link = element.href ? element : element.querySelector('a')
