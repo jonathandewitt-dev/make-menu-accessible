@@ -76,7 +76,8 @@ export default (item, options) => {
       const expandedItems = allItems.filter(
         i => i.element.getAttribute('aria-expanded') === 'true')
       if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = false
-      return expandedItems.forEach(currentItem =>
+      if (itemParentMenu) itemParentMenu.anySubmenuIsExpanded = false
+      expandedItems.forEach(currentItem =>
         currentItem.collapse && currentItem.collapse('current'))
     }
   })
