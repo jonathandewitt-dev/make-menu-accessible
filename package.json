@@ -2,13 +2,13 @@
   "name": "make-menu-accessible",
   "version": "1.0.3",
   "description": "A package that converts any menu into one that is keyboard and screen reader accessible.",
-  "main": "dist/index.js",
+  "main": "dist/index.commonjs.js",
   "module": "src/index.js",
   "sideEffects": false,
   "scripts": {
     "start-demo": "node demoServer.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "webpack && webpack --config commonjs.webpack.js",
     "start": "webpack-dev-server"
   },
   "author": "Jonathan DeWitt",

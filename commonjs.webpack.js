@@ -19,8 +19,9 @@ module.exports = {
 	entry: './src/index.js',
 
 	output: {
-		library: 'MakeMenuAccessible',
-		filename: 'index.var.js',
+		library: 'makeMenuAccessible',
+    libraryTarget: 'commonjs',
+		filename: 'index.commonjs.js',
 		path: path.resolve(__dirname, 'dist')
 	},
 
