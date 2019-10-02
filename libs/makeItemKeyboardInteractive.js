@@ -29,7 +29,7 @@ export default (item, options, keydownCallback) => {
     // check if the key pressed should use default behavior
     const link = element.href ? element : element.querySelector('a')
     const shouldUseDefault = link && link.href && defaultKeys.includes(event.key)
-    if (shouldUseDefault) return
+    if (shouldUseDefault) return link.click()
     event.preventDefault()
     event.stopPropagation()
 

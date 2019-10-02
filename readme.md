@@ -104,3 +104,36 @@ makeMenuAccessible(menuElement, event => {
   }
 })
 ```
+
+USING WITHOUT MODULES
+===
+Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`.  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You must target the file `index.var.js` for this method to work.
+
+```html
+<script src="node_modules/make-menu-accessible/dist/index.var.js"></script>
+<script>
+  const makeMenuAccessible = MakeMenuAccessible.default
+  const menuElement = document.querySelector('.menu')
+
+  makeMenuAccessible(menuElement)
+</script>
+```
+
+FEATURES
+===
+So all of that is great for setting up, but what does it actually do?  Well, a lot of things, actually.
+
+**ATTRIBUTES**
+  1. Sets roles for `menubar`, `menu`, and `menuitem`, and anything that isn't one of those is set to `none`.
+  2. Sets `aria-haspopup` on links that appear to be associated with a submenu.
+  3. Sets `aria-expanded="false"` by default on all links associated with a submenu, and toggles that value to `"true"` if the user expands it with the keyboard.
+  4. Sets `aria-hidden="true"` by default on all submenus, and toggles that value to `"true"` if the user expands it with the keyboard.
+  5. Sets `aria-label` or `aria-labelledby` as outlined in the [labels](#labels) section of this document.
+
+**KEYBOARD NAVIGATION**
+  1. When focus is brought to the first item in the menu, the user may browse through each item in the current menu with the tab key, or by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.
+  2. Submenus can be expanded by hitting enter/return or the space bar.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
+  3. If a menu item is or has a link with a valid href, hitting enter or space will trigger a link click.
+  4. If a menu is expanded and the user hits an arrow key in a direction where no navigation is possible and no items can be expanded, it will collapse the current menu and bring the focus to the next *parent* item.  When an item is collapsed in this way, all parent items will expand automatically as the user navigates, until the escape key is pressed.
+  5. Submenus can be collapsed by hitting the escape key.
+  6. Go to the first item in a menu by hitting the home or page up keys.  Conversely, go to the last item in a menu by hitting end or page down.
