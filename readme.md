@@ -138,7 +138,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   4. If a menu is expanded and the user hits an arrow key in a direction where no navigation is possible and no items can be expanded, it will collapse the current menu and bring the focus to the next *parent* item.  When an item is collapsed in this way, all parent items will expand automatically as the user navigates, until the escape key is pressed.
   5. Submenus can be collapsed by hitting the escape key.
   6. Go to the first item in a menu by hitting the home or page up keys.  Conversely, go to the last item in a menu by hitting end or page down.
-  7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets every half-second, so the user can start typing a new filter.
+  7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets a half-second after the user stops typing, so a new filter can be typed.
 
 **FLEXIBILITY**
 
