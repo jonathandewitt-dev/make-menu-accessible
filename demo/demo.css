@@ -1,20 +1,53 @@
-.navMenu {
-  font-size: 0;
-  font-family: sans-serif;
+.menu,
+.submenu,
+.menuItem {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.title {
-  font-size: 24px;
+.menu,
+.submenu {
+  background-color: gray;
+  color: white;
 }
 
-.submenuContainer {
+.menuItem {
+  display: inline-block;
   position: relative;
-  display: inline-block;
 }
 
-.submenuContainer:hover > .submenu,
+.submenu .menuItem {
+  width: 100%;
+}
+
+.menuItem > a {
+  display: block;
+  font-family: sans-serif;
+  text-decoration: none;
+  padding: 20px;
+  color: lightgray;
+}
+
+.menuItem > a:hover,
+.menuItem:focus > a {
+  color: white;
+  background-color: black;
+}
+
+.menuItem[aria-haspopup] > a::after {
+  content: ' \25BE';
+  display: 'inline-block';
+  line-height: 1em;
+}
+
+.submenu .menuItem[aria-haspopup] > a::after {
+  content: ' \25B8'
+}
+
+.menuItem:hover > .submenu,
 .submenu[aria-hidden="false"] {
-  display: inline-block;
+  display: block;
 }
 
 .submenu {
@@ -22,38 +55,10 @@
   position: absolute;
   top: 100%;
   left: 0;
+  min-width: 100%;
 }
 
 .submenu .submenu {
   top: 0;
   left: 100%;
-}
-
-.menuItem {
-  background-color: gray;
-  color: white;
-  display: inline-block;
-  font-size: 18px;
-  padding: 10px 20px;
-  text-decoration: none;
-}
-
-.menuItem:hover,
-.menuItem:focus {
-  outline: none;
-  background-color: darkgray;
-}
-
-.submenu .menuItem {
-  width: 100px;
-}
-
-.menuItem[aria-haspopup]::after {
-  content: ' \25BE';
-  display: 'inline-block';
-  line-height: 1em;
-}
-
-.submenu .menuItem[aria-haspopup]::after {
-  content: ' \25B8'
 }
