@@ -24,12 +24,12 @@
 }
 
 .menuItem > a:hover,
-.menuItem:focus > a {
+.menuItem > a:focus {
   background-color: darkgray;
   color: white;
 }
 
-.menuItem:focus {
+.menuItem a:focus {
   outline: 1px solid black;
 }
 

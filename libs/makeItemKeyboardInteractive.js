@@ -15,8 +15,15 @@ export default (item, options, keydownCallback) => {
     focusKeyMap[parentMenuOptions.layout] :
     {nextKeys: [], prevKeys: []}
 
-  // set the default tabindex
-  element.setAttribute('tabindex', '0')
+  const collapseAll = withFocus => {
+    const allItems = menuObject.getAllItems(menuParentMenu)
+    const expandedItems = allItems.filter(
+      i => i.element.getAttribute('aria-expanded') === 'true')
+    if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = false
+    if (itemParentMenu) itemParentMenu.anySubmenuIsExpanded = false
+    expandedItems.forEach(currentItem =>
+      currentItem.collapse && currentItem.collapse('current', false))
+  }
 
   // determine the action to take based on the key pressed
   element.addEventListener('keydown', event => {
@@ -27,9 +34,8 @@ export default (item, options, keydownCallback) => {
     if (!continueKeydown) return
 
     // check if the key pressed should use default behavior
-    const link = element.href ? element : element.querySelector('a')
-    const shouldUseDefault = link && link.href && defaultKeys.includes(event.key)
-    if (shouldUseDefault) return link.click()
+    const shouldUseDefault = element.href && defaultKeys.includes(event.key)
+    if (shouldUseDefault) return event.key === 'Tab' && collapseAll()
     event.preventDefault()
     event.stopPropagation()
 
@@ -77,14 +83,6 @@ export default (item, options, keydownCallback) => {
 
     // check if the key pressed should collapse all menus
     const shouldCollapse = collapseKeys.includes(event.key)
-    if (shouldCollapse) {
-      const allItems = menuObject.getAllItems(menuParentMenu)
-      const expandedItems = allItems.filter(
-        i => i.element.getAttribute('aria-expanded') === 'true')
-      if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = false
-      if (itemParentMenu) itemParentMenu.anySubmenuIsExpanded = false
-      expandedItems.forEach(currentItem =>
-        currentItem.collapse && currentItem.collapse('current'))
-    }
+    if (shouldCollapse) collapseAll()
   })
 }

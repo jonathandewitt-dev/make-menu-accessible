@@ -34,9 +34,12 @@ export default {
 
     return menu
   },
-  addItem(element, parentMenu) {
+  addItem(itemElement, parentMenu) {
     const options = parentMenu.options
     const {submenuSelector} = options
+
+    // find the link that belongs to this item, if any
+    const element = itemElement.querySelector('a') || itemElement
 
     // find the submenu that belongs to this item, if any
     const siblings = [...element.parentElement.children]
@@ -51,8 +54,8 @@ export default {
 
     if (!submenu) return parentMenu.items.push(simpleItem)
     const itemWithMenu = Object.assign(simpleItem, {
-      expand(pref) { toggleExpanded(this, pref, true) },
-      collapse(pref) { toggleExpanded(this, pref, false) },
+      expand(pref, withFocus = true) { toggleExpanded(this, pref, true, withFocus) },
+      collapse(pref, withFocus = true) { toggleExpanded(this, pref, false, withFocus) },
     })
     itemWithMenu.attachedMenu = this.addMenu(submenu, itemWithMenu, parentMenu)
   
@@ -61,11 +64,14 @@ export default {
   getAllItems(relativeMenu) {
     return this.menus.reduce((allItems, menu) => {
       const {itemSelector} = menu.options
-      const childItems = relativeMenu &&
-        [...relativeMenu.element.querySelectorAll(itemSelector)]
-      const isChildOfMenu = relativeMenu ?
-        childItems.find(i => i === menu.items[0].element) :
-        true
+      const childItems = relativeMenu ?
+        [...relativeMenu.element.querySelectorAll(itemSelector)] :
+        []
+      const matchingElement = childItems.find(item => {
+        const element = item.querySelector('a') || i
+        return element === menu.items[0].element
+      })
+      const isChildOfMenu = relativeMenu ? !!matchingElement : true
       if (isChildOfMenu) allItems.push(...menu.items)
       return allItems
     }, [])

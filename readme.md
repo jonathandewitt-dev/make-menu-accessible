@@ -75,7 +75,7 @@ All the data attributes mentioned above may also be used on any submenu, in addi
 
 LABELS
 ===
-So you know everything needs a aria-label, right?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, it searches for a heading tag nested inside.  If it finds one, it will ensure your title has a unique ID if it doesn't already have one, and then automatically set the `aria-labelledby` attribute on your menu.  But not all menus contain a heading tag, as they probably shouldn't.  You can also assign a name manually with `data-name`, and if that isn't populated then it just defaults to `'Site Menu'`.  No matter the case, your menu will not be without a label.
+So you know everything needs `aria-label`, right?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, it searches for a heading tag nested inside.  If it finds one, it will ensure your title has a unique ID if it doesn't already have one, and then automatically set the `aria-labelledby` attribute on your menu.  But not all menus contain a heading tag, as they probably shouldn't.  You can also assign a name manually with `data-name`, and if that isn't populated then it just defaults to `'Site Menu'`.  No matter the case, your menu will not be without a label.
 
 ```html
 <nav class="menu"
@@ -132,7 +132,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   6. Sets `aria-label` or `aria-labelledby` as outlined in the [labels](#labels) section of this document.
 
 **KEYBOARD NAVIGATION**
-  1. When focus is brought to the first item in the menu, the user may browse through each item in the current menu with the tab key, or by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.
+  1. After focus is brought to the menu, the user may browse through each item in the current menu by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.  Pressing tab will collapse all menus and move to the next focusable item on the page.
   2. Submenus can be expanded by hitting enter/return or the space bar.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
   3. If a menu item is or has a link with a valid href, hitting enter or space will trigger a link click.
   4. If a menu is expanded and the user hits an arrow key in a direction where no navigation is possible and no items can be expanded, it will collapse the current menu and bring the focus to the next *parent* item.  When an item is collapsed in this way, all parent items will expand automatically as the user navigates, until the escape key is pressed.

@@ -1,5 +1,5 @@
 // array of keys to use default behavior under certain conditions
-export const defaultKeys = ['Enter', 'Spacebar', ' ']
+export const defaultKeys = ['Enter', 'Spacebar', ' ', 'Tab']
 
 // array of keys for collapsing
 export const collapseKeys = ['Esc', 'Escape']
@@ -11,11 +11,11 @@ export const lastKeys = ['End', 'PageDown']
 // object for mapping keys to focus actions
 export const focusKeyMap = {
   horizontal: {
-    nextKeys: ['Right', 'ArrowRight', 'Tab'],
+    nextKeys: ['Right', 'ArrowRight'],
     prevKeys: ['Left', 'ArrowLeft'],
   },
   vertical: {
-    nextKeys: ['Down', 'ArrowDown', 'Tab'],
+    nextKeys: ['Down', 'ArrowDown'],
     prevKeys: ['Up', 'ArrowUp'],
   },
 }

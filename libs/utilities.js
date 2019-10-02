@@ -50,18 +50,15 @@ export const focus = (item, pref, useItemIndex) => {
 }
 
 // expand or collapse a menu given its parent item
-export const toggleExpanded = (item, pref, shouldExpand) => {
+export const toggleExpanded = (item, pref, shouldExpand, withFocus) => {
   const {element, attachedMenu} = item
   
   const itemsInSubmenu = attachedMenu.items
-  const tabindex = shouldExpand ? '0' : '-1'
-  itemsInSubmenu.forEach(submenuItem =>
-    submenuItem.element.setAttribute('tabindex', String(tabindex)))
   element.setAttribute('aria-expanded', String(shouldExpand))
   attachedMenu.element.setAttribute('aria-hidden', String(!shouldExpand))
 
   // determine which item to focus, if any
-  if (pref === 'none') return
+  if (pref === 'none' || !withFocus) return
   if (shouldExpand) return focus(itemsInSubmenu[0], pref)
   focus(item, pref, true)
 }

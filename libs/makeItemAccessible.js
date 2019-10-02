@@ -3,18 +3,16 @@ export default item => {
   const {element, attachedMenu} = item
   
   // disable link if it's on the current page and label it as such
-  const link = element.tagName === 'A' ? element : element.querySelector('a')
-  if (window.location.href === link.href) {
-    link.setAttribute('href', '#')
-    link.setAttribute('aria-current', 'page')
+  if (window.location.href === element.href) {
+    element.setAttribute('href', '#')
+    element.setAttribute('aria-current', 'page')
   }
 
   // if the item has a submenu, label it as such
-  const currentItem = link || element
-  currentItem.setAttribute('role', 'menuitem')
+  element.setAttribute('role', 'menuitem')
   if (attachedMenu) {
-    currentItem.setAttribute('aria-haspopup', 'true')
-    currentItem.setAttribute('aria-expanded', 'false')
+    element.setAttribute('aria-haspopup', 'true')
+    element.setAttribute('aria-expanded', 'false')
     attachedMenu.element.setAttribute('aria-hidden', 'true')
   }
 }
