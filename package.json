@@ -1,7 +1,7 @@
 {
   "name": "make-menu-accessible",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "A package that converts any menu into one that is keyboard and screen reader accessible.",
   "main": "dist/index.js",
   "module": "src/index.js",
   "sideEffects": false,
