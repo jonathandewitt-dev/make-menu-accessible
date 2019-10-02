@@ -62,11 +62,11 @@
   display: block;
 }
 
-.menuItem[aria-haspopup="true"] > a::after {
+.menuItem > a[aria-haspopup="true"]::after {
   content: ' \25BE';
   line-height: 1em;
 }
 
-.submenu .menuItem[aria-haspopup="true"] > a::after {
+.submenu .menuItem > a[aria-haspopup="true"]::after {
   content: ' \25B8';
 }

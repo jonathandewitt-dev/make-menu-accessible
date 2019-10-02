@@ -30,6 +30,10 @@ const makeEachMenuAccessible = (menu, keydownCallback) => {
   const {element, items, parentItem} = menu
   const {options} = menu
 
+  // Before adding roles, set all to none
+  const allChildren = [...element.querySelectorAll('*')]
+  allChildren.forEach(el => el.setAttribute('role', 'none'))
+
   // Make sure the menu is labelled
   addLabelTo(menu)
 
