@@ -68,7 +68,7 @@ export default {
         [...relativeMenu.element.querySelectorAll(itemSelector)] :
         []
       const matchingElement = childItems.find(item => {
-        const element = item.querySelector('a') || i
+        const element = item.querySelector('a') || item
         return element === menu.items[0].element
       })
       const isChildOfMenu = relativeMenu ? !!matchingElement : true
