@@ -62,19 +62,19 @@ export default {
     parentMenu.items.push(itemWithMenu)
   },
   getAllItems(relativeMenu) {
+    const parentMenu = relativeMenu || this.menus[0]
+    const {itemSelector} = parentMenu.options
+    const childElements =
+      [...parentMenu.element.querySelectorAll(itemSelector)]
+
     return this.menus.reduce((allItems, menu) => {
-      const {items, options} = menu
-      const {itemSelector} = options
-      
-      const childItems = relativeMenu ?
-        [...relativeMenu.element.querySelectorAll(itemSelector)] :
-        []
-      const matchingElement = childItems.find(item => {
-        const element = item.querySelector('a') || item
-        return element === items.length && items[0].element
-      })
-      const isChildOfMenu = relativeMenu ? !!matchingElement : true
-      if (isChildOfMenu) allItems.push(...menu.items)
+
+      const firstItemOfCurrentMenu =
+        menu.items && menu.items[0].element
+      const isChildOfParentMenu = childElements.find(
+        el => (el.querySelector('a') || el) === firstItemOfCurrentMenu)
+
+      if (isChildOfParentMenu) allItems.push(...menu.items)
       return allItems
     }, [])
   },
