@@ -1,5 +1,5 @@
 
-export default item => {
+export default (item, firstLink) => {
   const {element, attachedMenu} = item
   
   // disable link if it's on the current page and label it as such
@@ -15,4 +15,8 @@ export default item => {
     element.setAttribute('aria-expanded', 'false')
     attachedMenu.element.setAttribute('aria-hidden', 'true')
   }
+  
+  // enable only the first item link's tabindex
+  const tabindex = element === firstLink ? '0' : '-1'
+  element.setAttribute('tabindex', tabindex)
 }

@@ -26,19 +26,9 @@ const addLabelTo = menu => {
   element.setAttribute(`aria-${key}`, label[key])
 }
 
-const makeEachMenuAccessible = (menu, keydownCallback) => {
+const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
   const {element, items, parentItem} = menu
   const {options} = menu
-
-  // Before adding roles, set all to none
-  const allChildren = [...element.querySelectorAll('*')]
-  allChildren.forEach(el => {
-    const role = el.getAttribute('role') || 'none'
-    el.setAttribute('role', role)
-    const firstLink = allChildren.find(i => i.matches('a'))
-    const tabindex = firstLink === el ? '0' : '-1'
-    if (el.matches('a')) el.setAttribute('tabindex', tabindex)
-  })
 
   // Make sure the menu is labelled
   addLabelTo(menu)
@@ -49,7 +39,7 @@ const makeEachMenuAccessible = (menu, keydownCallback) => {
   
   // make the items accessible
   items.forEach(item => {
-    makeItemAccessible(item)
+    makeItemAccessible(item, firstLink)
     makeItemKeyboardInteractive(item, options, keydownCallback)
   })
 }
@@ -58,9 +48,22 @@ export default (element, keydownCallback = () => {}) => {
   const menu = menuObject.addMenu(element)
   const {itemSelector} = menu.options
   const {menus} = menuObject
+
+  // blanket all contained elements with defaults
+  const allChildren = [...element.querySelectorAll('*')]
+  const firstLink = allChildren.find(el =>
+    el.matches('a') &&
+    (el.matches(itemSelector) || el.closest(itemSelector)))
+  allChildren.forEach(el => {
+
+    // before adding roles, set all to none by default
+    const role = el.getAttribute('role') || 'none'
+    el.setAttribute('role', role)
+  })
   
   // add attributes and keyboard functionality to this menu and all its submenus
-  menus.forEach(currentMenu => makeEachMenuAccessible(currentMenu, keydownCallback))
+  menus.forEach(currentMenu =>
+    makeEachMenuAccessible(currentMenu, keydownCallback, firstLink))
 
   // make any window click collapse all menus
   window.addEventListener('click', event => {
