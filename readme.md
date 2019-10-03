@@ -47,6 +47,23 @@ A common case is that your menu probably does not use the default classes.  You 
 </nav>
 ```
 
+Using these, the function is generally pretty good at figuring out how your menu is laid out, regardless of nesting depth.  But, it does assume your submenus are at least nested *somewhere* inside your menu, and *somewhere* in roughly the same scope as the associated item that expands it.  In some cases, though, your structure may not be so straightforward.  There *is* still an option for an unconventional layout, it just takes just a bit more customization.  On the element that matches the given `data-item-selector` of the parent menu, add a `data-submenu` attribute and assign it to the `id` of the submenu element to which you'd like to assign it.
+
+```html
+<nav class="menu">
+  <ul>
+    <li class="menuItem"><a href="">Home</a></li>
+    <li class="menuItem" data-submenu="MySubmenu">
+      <a href="/about">About</a>
+    </li>
+  </ul>
+</nav>
+
+<ul id="MySubmenu">
+  <li class="menuItem"><a href="/more">More</a></li>
+</ul>
+```
+
 As much effort as I put in to avoid requiring much extra work from the developer, there are certain cases that would change the behavior of the menu.  What if this was a sidebar?  And what if one project has a left sidebar, and the other has a right sidebar?  Well, fortunately, you still don't have to add very much to your markup.
 
 If your menu contains items that are visually stacked on the left side, you can just add `data-alignment` and `data-layout` to help the function better handle your menu.
