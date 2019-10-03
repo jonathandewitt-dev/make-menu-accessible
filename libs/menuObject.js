@@ -36,6 +36,7 @@ export default {
   },
   addItem(itemElement, parentMenu) {
     const options = parentMenu.options
+    const {submenu} = itemElement.dataset
     const {submenuSelector} = options
 
     // find the link that belongs to this item, if any
@@ -43,7 +44,10 @@ export default {
 
     // find the submenu that belongs to this item, if any
     const siblings = [...element.parentElement.children]
-    const submenu = element.querySelector(submenuSelector)
+    const submenuElement =
+      submenu ?
+      document.getElementById(submenu) :
+      element.querySelector(submenuSelector)
       || siblings.find(el => el.matches(submenuSelector))
       
     const simpleItem = {
@@ -52,12 +56,12 @@ export default {
       focus(pref) { focus(this, pref) },
     }
 
-    if (!submenu) return parentMenu.items.push(simpleItem)
+    if (!submenuElement) return parentMenu.items.push(simpleItem)
     const itemWithMenu = Object.assign(simpleItem, {
       expand(pref, withFocus = true) { toggleExpanded(this, pref, true, withFocus) },
       collapse(pref, withFocus = true) { toggleExpanded(this, pref, false, withFocus) },
     })
-    itemWithMenu.attachedMenu = this.addMenu(submenu, itemWithMenu, parentMenu)
+    itemWithMenu.attachedMenu = this.addMenu(submenuElement, itemWithMenu, parentMenu)
   
     parentMenu.items.push(itemWithMenu)
   },
@@ -70,7 +74,7 @@ export default {
     return this.menus.reduce((allItems, menu) => {
 
       const firstItemOfCurrentMenu =
-        menu.items && menu.items[0].element
+        menu.items.length && menu.items[0].element
       const isChildOfParentMenu = childElements.find(
         el => (el.querySelector('a') || el) === firstItemOfCurrentMenu)
 

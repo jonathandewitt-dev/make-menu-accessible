@@ -51,9 +51,8 @@ export default (element, keydownCallback = () => {}) => {
 
   // blanket all contained elements with defaults
   const allChildren = [...element.querySelectorAll('*')]
-  const firstLink = allChildren.find(el =>
-    el.matches('a') &&
-    (el.matches(itemSelector) || el.closest(itemSelector)))
+  const firstItem = allChildren.find(el => el.matches(itemSelector))
+  const firstLink = firstItem.querySelector('a') || firstItem
   allChildren.forEach(el => {
 
     // before adding roles, set all to none by default
