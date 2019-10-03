@@ -63,13 +63,15 @@ export default {
   },
   getAllItems(relativeMenu) {
     return this.menus.reduce((allItems, menu) => {
-      const {itemSelector} = menu.options
+      const {items, options} = menu
+      const {itemSelector} = options
+      
       const childItems = relativeMenu ?
         [...relativeMenu.element.querySelectorAll(itemSelector)] :
         []
       const matchingElement = childItems.find(item => {
         const element = item.querySelector('a') || item
-        return element === menu.items[0].element
+        return element === items.length && items[0].element
       })
       const isChildOfMenu = relativeMenu ? !!matchingElement : true
       if (isChildOfMenu) allItems.push(...menu.items)
