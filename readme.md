@@ -131,6 +131,37 @@ Even so, this works for one particular layout at a time, but what if you want yo
 * `data-mobile-width` takes any plain number value, representing the viewport width in pixels.
 * You may also use the shorthand syntax, `data-mobile`, where you provide three values separated by a space representing `layout`, `alignment`, and `width` respectively.  e.g. `data-mobile="vertical left 500"`.
 
+MENU TOGGLER
+===
+Okay, so your menu is hidden by a toggle button, what now?  Well, good news, this package can handle that too.  Just give your toggler a unique ID and assign the value of your menu's `data-menu-toggler` to that same ID.
+
+```html
+<a id="MenuToggler">Menu</a>
+<nav class="menu"
+     data-menu-toggler="MenuToggler"
+>
+  <!-- ... -->
+</nav>
+```
+
+But wait, one of the most common formats on the web is to use a toggle button *specifically* for a mobile screen size.  Referring to the mobile responsive options outlined above, lets add one more attribute to your arsenal.  `data-mobile-toggler="true"` will enable your toggle button only when your screen width is less than the width provided in `data-mobile-width`.  Additionally, if your button is aligned differently than the default `top`, you can always add `data-alignment` to the toggler element itself.
+
+```html
+<a id="MenuToggler"
+   data-alignment="right"
+>Menu</a>
+<nav class="menu"
+     data-menu-toggler="MenuToggler"
+     data-mobile-toggler="true"
+     data-mobile-width="500"
+>
+  <!-- ... -->
+</nav>
+```
+
+* Just like the menus, possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
+* You may also use a fourth argument in the shorthand syntax `data-mobile`, instead of `data-mobile-toggler`.  e.g. `data-mobile="vertical left 500 true"`.
+
 THE KEYDOWN EVENT
 ===
 This function uses `event.stopPropagation()` on the `'keydown'` event in order to run properly, avoiding multiple triggers on all the element's parents.  If you need to add another callback to the `'keydown'` event on any menu item, you can use the second argument of the main function to feed it your custom callback.  If you give your callback a return value of false, it will not run the rest of the callback set by this package.  If you don't provide any return value, it defaults to true.
