@@ -5,11 +5,6 @@
   "main": "dist/makeMenuAccessible.min.js",
   "module": "src/index.js",
   "unpkg": "umd/makeMenuAccessible.min.js",
-  "files": [
-    "./src/",
-    "./dist/",
-    "./umd/"
-  ],
   "sideEffects": false,
   "scripts": {
     "start-demo": "node demoServer.js",
