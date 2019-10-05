@@ -199,11 +199,11 @@ FEATURES
 So all of that is great for setting up, but what does it actually do?  Well, a lot of things, actually.
 
 **ATTRIBUTES**
-  1. Sets roles for `menubar`, `menu`, and `menuitem`, and anything that isn't one of those is set to `none`.
+  1. Sets roles for `menubar`, `menu`, and `menuitem`, and sets the role of the menu toggler to `button` if it's present.  Anything that isn't one of those is set to `none`.
   2. Sets `tabindex="0"` on only the items in the currently visible menus, and `tabindex="-1"` on all items inside hidden menus.
-  3. Sets `aria-haspopup` on links that appear to be associated with a submenu.
-  4. Sets `aria-expanded="false"` by default on all links associated with a submenu, and toggles that value to `"true"` if the user expands it with the keyboard.
-  5. Sets `aria-hidden="true"` by default on all submenus, and toggles that value to `"false"` if the user expands it with the keyboard.
+  3. Sets `aria-haspopup` on links that appear to be associated with a submenu, and the menu toggler if one is present.
+  4. Sets `aria-expanded="false"` by default on all links associated with a submenu, and toggles that value to `"true"` if the user expands it with the keyboard.  Same for the menu toggler if one is present.
+  5. Sets `aria-hidden="true"` by default on all submenus, and toggles that value to `"false"` if the user expands it with the keyboard.  Same for the entire menu if a menu toggler is present and active.
   6. Sets `aria-label` or `aria-labelledby` as outlined in the [labels](#labels) section of this document.
 
 **KEYBOARD NAVIGATION**

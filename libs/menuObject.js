@@ -71,11 +71,14 @@ export default {
 
     // find the submenu that belongs to this item, if any
     const siblings = [...element.parentElement.children]
+    const nextSibling = element.nextElementSibling
+    const nextSiblingIsSubmenu = nextSibling && nextSibling.matches(submenuSelector)
     const submenuElement =
       submenu ?
       document.getElementById(submenu) :
-      element.querySelector(submenuSelector)
-      || siblings.find(el => el.matches(submenuSelector))
+      nextSiblingIsSubmenu && nextSibling ||
+      element.querySelector(submenuSelector) ||
+      siblings.find(el => el.matches(submenuSelector))
       
     const simpleItem = {
       element,

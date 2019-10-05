@@ -82,6 +82,10 @@
   margin-bottom: 20px;
 }
 
+.mobileToggler:focus {
+  outline: 2px solid black;
+}
+
 @media (max-width: 800px) {
 
   .mobileToggler,
@@ -91,7 +95,7 @@
     display: inline-block;
   }
 
-  .mobileToggler.toggled {
+  .mobileToggler[aria-expanded="true"] {
     background-color: white;
     color: black;
   }
