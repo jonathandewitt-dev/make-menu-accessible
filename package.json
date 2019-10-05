@@ -2,14 +2,21 @@
   "name": "make-menu-accessible",
   "version": "1.0.9",
   "description": "A package that converts any menu into one that is keyboard and screen reader accessible.",
-  "main": "dist/index.commonjs.js",
+  "main": "dist/makeMenuAccessible.min.js",
   "module": "src/index.js",
-  "unpkg": "dist/index.var.js",
+  "unpkg": "umd/makeMenuAccessible.min.js",
+  "files": [
+    "./src",
+    "./dist",
+    "./umd"
+  ],
   "sideEffects": false,
   "scripts": {
     "start-demo": "node demoServer.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && webpack --config commonjs.webpack.js",
+    "build": "webpack --config commonjs.webpack.js && webpack --config umd.webpack.js",
+    "build-min": "webpack --config commonjs.webpack.min.js && webpack --config umd.webpack.min.js",
+    "build-all": "npm run build && npm run build-min",
     "start": "webpack-dev-server"
   },
   "author": "Jonathan DeWitt",
@@ -23,6 +30,7 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "express": "^4.17.1",
     "html-webpack-plugin": "^3.2.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.1"

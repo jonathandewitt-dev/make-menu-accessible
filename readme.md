@@ -124,10 +124,10 @@ makeMenuAccessible(menuElement, event => {
 
 USING WITHOUT MODULES
 ===
-Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`.  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You must target the file `index.var.js` for this method to work.
+Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`, or you just want to play around with this in a sandbox like [jsfiddle](https://jsfiddle.net) or [codepen](https://codepen.io/pen/).  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You can use [unpkg](https://unpkg.com) to grab a CDN of this package, like so.
 
 ```html
-<script src="node_modules/make-menu-accessible/dist/index.var.js"></script>
+<script src="https://unpkg.com/umd/makeMenuAccessible.min.js"></script>
 <script>
   const makeMenuAccessible = MakeMenuAccessible.default
   const menuElement = document.querySelector('.menu')
