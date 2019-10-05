@@ -10,22 +10,22 @@ export default (item, options, keydownCallback = () => {}) => {
   const {menu, mobile} = options
 
   // menu options
-  const layout = options.layout || menu && menu.split(' ')[0]
-  const alignment = options.alignment || menu && menu.split(' ')[1]
+  const layout = menu && menu.split(' ')[0] || options.layout
+  const alignment =  menu && menu.split(' ')[1] || options.alignment
   const parentMenuOptions = menuParentMenu && menuParentMenu.options
   const parentMenuLayout = parentMenuOptions &&
-    (parentMenuOptions.layout ||
-    parentMenuOptions.menu &&
-    parentMenuOptions.menu.split(' ')[0])
+    (parentMenuOptions.menu &&
+    parentMenuOptions.menu.split(' ')[0] ||
+    parentMenuOptions.layout)
 
   // mobile options
-  const mobileLayout = options.mobileLayout || mobile && mobile.split(' ')[0]
-  const mobileAlignment = options.mobileAlignment || mobile && mobile.split(' ')[1]
-  const mobileWidth = options.mobileWidth || mobile && mobile.split(' ')[2]
+  const mobileLayout = mobile && mobile.split(' ')[0] || options.mobileLayout
+  const mobileAlignment = mobile && mobile.split(' ')[1] || options.mobileAlignment
+  const mobileWidth = mobile && mobile.split(' ')[2] || options.mobileWidth
   const parentMobileLayout = parentMenuOptions &&
-    (parentMenuOptions.mobileLayout ||
-    parentMenuOptions.mobile &&
-    parentMenuOptions.mobile.split(' ')[0])
+    (parentMenuOptions.mobile &&
+    parentMenuOptions.mobile.split(' ')[0] ||
+    parentMenuOptions.mobileLayout)
 
   // function to collapse all collapsible menu items
   const collapseAll = (withFocus = true) => {
