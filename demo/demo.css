@@ -70,3 +70,52 @@
 .submenu .menuItem > a[aria-haspopup="true"]::after {
   content: ' \25B8';
 }
+
+.mobileToggler,
+.mobileToggler:active,
+.mobileToggler:hover,
+.mobileToggler:visited {
+  display: none;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 800px) {
+
+  .mobileToggler,
+  .mobileToggler:active,
+  .mobileToggler:hover,
+  .mobileToggler:visited {
+    display: inline-block;
+  }
+
+  .mobileToggler.toggled {
+    background-color: white;
+    color: black;
+  }
+
+  .mainMenu {
+    display: none;
+  }
+
+  .mobileToggler.toggled + .mainMenu {
+    display: block;
+  }
+
+  .menuItem {
+    display: block;
+    width: 33%;
+  }
+
+  .menuItem > a[aria-haspopup="true"]::after {
+    content: ' \25B8';
+  }
+
+  .submenu {
+    top: 0;
+    left: 100%;
+  }
+
+}

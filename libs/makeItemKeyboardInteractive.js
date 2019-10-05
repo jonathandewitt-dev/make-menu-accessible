@@ -6,15 +6,28 @@ export default (item, options, keydownCallback) => {
   const {element} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
-  const {layout, alignment} = options
-  const parentMenuOptions = menuParentMenu && menuParentMenu.options
   const {parentItem} = itemParentMenu
-  const {nextKeys, prevKeys} = focusKeyMap[layout]
-  const expandKeys = expandKeyMap[alignment]
-  const collapseKeyMap = parentMenuOptions ?
-    focusKeyMap[parentMenuOptions.layout] :
-    {nextKeys: [], prevKeys: []}
+  const {menu, mobile} = options
 
+  // menu options
+  const layout = options.layout || menu && menu.split(' ')[0]
+  const alignment = options.alignment || menu && menu.split(' ')[1]
+  const parentMenuOptions = menuParentMenu && menuParentMenu.options
+  const parentMenuLayout = parentMenuOptions &&
+    (parentMenuOptions.layout ||
+    parentMenuOptions.menu &&
+    parentMenuOptions.menu.split(' ')[0])
+
+  // mobile options
+  const mobileLayout = options.mobileLayout || mobile && mobile.split(' ')[0]
+  const mobileAlignment = options.mobileAlignment || mobile && mobile.split(' ')[1]
+  const mobileWidth = options.mobileWidth || mobile && mobile.split(' ')[2]
+  const parentMobileLayout = parentMenuOptions &&
+    (parentMenuOptions.mobileLayout ||
+    parentMenuOptions.mobile &&
+    parentMenuOptions.mobile.split(' ')[0])
+
+  // function to collapse all collapsible menu items
   const collapseAll = (withFocus = true) => {
     const allItems = menuObject.getAllItems(menuParentMenu)
     const expandedItems = allItems.filter(
@@ -27,6 +40,15 @@ export default (item, options, keydownCallback) => {
 
   // determine the action to take based on the key pressed
   element.addEventListener('keydown', event => {
+
+    // get the key maps for the current layout
+    const hasMobileOptions = !!(mobileLayout || mobileAlignment || mobileWidth)
+    const isMobile = hasMobileOptions && window.innerWidth < mobileWidth
+    const {nextKeys, prevKeys} = focusKeyMap[isMobile ? mobileLayout : layout]
+    const expandKeys = expandKeyMap[isMobile ? mobileAlignment : alignment]
+    const collapseKeyMap = parentMenuOptions ?
+      focusKeyMap[isMobile ? parentMobileLayout : parentMenuLayout] :
+      {nextKeys: [], prevKeys: []}
 
     // run the user defined event callback
     const callbackReturnVal = keydownCallback(event)
