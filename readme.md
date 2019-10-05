@@ -66,12 +66,12 @@ Using these, the function is generally pretty good at figuring out how your menu
 
 As much effort as I put in to avoid requiring much extra work from the developer, there are certain cases that would change the behavior of the menu.  What if this was a sidebar?  And what if one project has a left sidebar, and the other has a right sidebar?  Well, fortunately, you still don't have to add very much to your markup.
 
-If your menu contains items that are visually stacked on the left side, you can just add `data-alignment` and `data-layout` to help the function better handle your menu.
+If your menu contains items that are visually stacked on the left side, you can just add `data-layout` and `data-alignment` to help the function better handle your menu.
 
 ```html
 <nav class="menu"
-     data-alignment="left"
      data-layout="vertical"
+     data-alignment="left"
 >
   <ul>
     <li class="menuItem"><a href="">Home</a></li>
@@ -85,10 +85,35 @@ If your menu contains items that are visually stacked on the left side, you can 
 </nav>
 ```
 
-Possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
-Possible values of `data-layout` are `vertical` and `horizontal`.
+* Possible values of `data-layout` are `vertical` and `horizontal`.
+* Possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
+* You may also use the shorthand syntax, `data-menu`, where you provide two values separated by a space representing `layout` and `alignment` respectively.  e.g. `data-menu="vertical left"`.
 
 All the data attributes mentioned above may also be used on any submenu, in addition to the main one.  By default, the main menu is set to `data-alignment="top"` and `data-layout="horizontal"`, and all submenus default to `data-alignment="left"` and `data-layout="vertical"`.  These settings are the most common on the web, so most times you will not have to add these attributes at all, but in the event that you require it, they can all be changed independently of each other.
+
+Even so, this works for one particular layout at a time, but what if you want your layout to dynamically change, like in the case of mobile-responsive menus?  Once again, there are options provided for this too.  `data-mobile-layout`, `data-mobile-alignment`, and `data-mobile-width`.  The first two function exactly like `data-alignment` and `data-layout`, but these ones only apply when the screen width is smaller than the threshold given in `data-mobile-width`.
+
+```html
+<nav class="menu"
+     data-mobile-layout="vertical"
+     data-mobile-alignment="left"
+     data-mobile-width="500"
+>
+  <ul>
+    <li class="menuItem"><a href="">Home</a></li>
+    <li class="menuItem">
+      <a href="/about">About</a>
+      <ul class="submenu">
+        <li class="menuItem"><a href="/more">More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+```
+
+* `data-mobile-width` takes any plain number value, representing the viewport width in pixels.
+* You may also use the shorthand syntax, `data-mobile`, where you provide three values separated by a space representing `layout`, `alignment`, and `width` respectively.  e.g. `data-mobile="vertical left 500"`.
+
 
 LABELS
 ===
@@ -160,7 +185,3 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 **FLEXIBILITY**
 
 Ideally, this function should work with any menu structure you prefer.  That means it's pretty good at figuring out whether or not you're using [listless navigation](https://css-tricks.com/navigation-in-lists-to-be-or-not-to-be/), where your navigation links are actually nested, and in most cases it should just work out of the box.  Even if your menu items are nested several layers deep inside your submenu, the code is built to ignore any parents that are not a submenu and make any associations from there.
-
-IN DEVELOPMENT
-===
-This works for one particular layout, but what about mobile-responsive menus?  I'm working on adding a mobile option to cover this case as well.  Again with overridable defaults, hopefully covering most cases all at once.
