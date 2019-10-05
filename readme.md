@@ -24,9 +24,24 @@ const menuElement = document.querySelector('.menu')
 makeMenuAccessible(menuElement)
 ```
 
-**Note:** the main function is a default export, so you won't need those curly braces and you can name it whatever works best in your project's namespace.
+**Note:** the main function is both a *named* and *default* export, so you have the option of importing it as any name that fits your project's namespace.  Both `import yourFnName from 'make-menu-accessible'` and `import {makeMenuAccessible} from 'make-menu-accessible'` are valid.
 
-CUSTOMIZED USAGE
+USING WITHOUT MODULES
+===
+Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`, or you just want to play around with this in a sandbox like [jsfiddle](https://jsfiddle.net) or [codepen](https://codepen.io/pen/).  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You can use [unpkg](https://unpkg.com) to grab a CDN of this package, like so.
+
+```html
+<script src="https://unpkg.com/umd/makeMenuAccessible.min.js"></script>
+<script>
+  // The default export is attached as a method to the global MakeMenuAccessible object
+  const makeMenuAccessible = MakeMenuAccessible.default
+  const menuElement = document.querySelector('.menu')
+
+  makeMenuAccessible(menuElement)
+</script>
+```
+
+CUSTOM SELECTORS
 ===
 A common case is that your menu probably does not use the default classes.  You could adjust your markup and add the classes, but who wants to do that?  Your menu has a structure already, it's likely that there's already a class in place for all your items and submenus.  That's where a set of custom attributes come in.  `data-item-selector` and `data-submenu-selector` should be given any valid query selector, and the main function will use it as a hook for all functionality provided by this package.
 
@@ -47,7 +62,7 @@ A common case is that your menu probably does not use the default classes.  You 
 </nav>
 ```
 
-Using these, the function is generally pretty good at figuring out how your menu is laid out, regardless of nesting depth.  But, it does assume your submenus are at least nested *somewhere* inside your menu, and *somewhere* in roughly the same scope as the associated item that expands it.  In some cases, though, your structure may not be so straightforward.  There *is* still an option for an unconventional layout, it just takes just a bit more customization.  On the element that matches the given `data-item-selector` of the parent menu, add a `data-submenu` attribute and assign it to the `id` of the submenu element to which you'd like to assign it.
+Using these, the function is generally pretty good at figuring out how your menu is laid out, regardless of nesting depth.  But, it does assume your submenus are at least nested *somewhere* inside your menu, and *somewhere* in roughly the same scope as the associated item that expands it.  In some cases, though, your structure may not be so straightforward.  There *is* still an option for an unconventional layout, it just takes just a bit more customization.  On a menu item element, add a `data-submenu` attribute and assign it the `id` of the submenu element to which the item should be attached.
 
 ```html
 <nav class="menu">
@@ -64,6 +79,8 @@ Using these, the function is generally pretty good at figuring out how your menu
 </ul>
 ```
 
+CUSTOM LAYOUT
+===
 As much effort as I put in to avoid requiring much extra work from the developer, there are certain cases that would change the behavior of the menu.  What if this was a sidebar?  And what if one project has a left sidebar, and the other has a right sidebar?  Well, fortunately, you still don't have to add very much to your markup.
 
 If your menu contains items that are visually stacked on the left side, you can just add `data-layout` and `data-alignment` to help the function better handle your menu.
@@ -114,19 +131,6 @@ Even so, this works for one particular layout at a time, but what if you want yo
 * `data-mobile-width` takes any plain number value, representing the viewport width in pixels.
 * You may also use the shorthand syntax, `data-mobile`, where you provide three values separated by a space representing `layout`, `alignment`, and `width` respectively.  e.g. `data-mobile="vertical left 500"`.
 
-
-LABELS
-===
-So you know you need `aria-label` on your menu, but what are the rules?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, it searches for a heading tag nested inside.  If it finds one, it will ensure your title has a unique ID if it doesn't already have one, and then automatically set the `aria-labelledby` attribute on your menu.  But not all menus contain a heading tag, as they probably shouldn't.  You can also assign a name manually with `data-name`, and if that isn't populated then it just defaults to `'Site Menu'`.  No matter the case, your menu will not be without a label.
-
-```html
-<nav class="menu"
-     data-name="My Menu Name"
->
-  <!-- ... -->
-</nav>
-```
-
 THE KEYDOWN EVENT
 ===
 This function uses `event.stopPropagation()` on the `'keydown'` event in order to run properly, avoiding multiple triggers on all the element's parents.  If you need to add another callback to the `'keydown'` event on any menu item, you can use the second argument of the main function to feed it your custom callback.  If you give your callback a return value of false, it will not run the rest of the callback set by this package.  If you don't provide any return value, it defaults to true.
@@ -147,18 +151,16 @@ makeMenuAccessible(menuElement, event => {
 })
 ```
 
-USING WITHOUT MODULES
+LABELS
 ===
-Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`, or you just want to play around with this in a sandbox like [jsfiddle](https://jsfiddle.net) or [codepen](https://codepen.io/pen/).  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You can use [unpkg](https://unpkg.com) to grab a CDN of this package, like so.
+So you know you need `aria-label` on your menu, but what are the rules?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, it searches for a heading tag nested inside.  If it finds one, it will ensure your title has a unique ID if it doesn't already have one, and then automatically set the `aria-labelledby` attribute on your menu.  But not all menus contain a heading tag, as they probably shouldn't.  You can also assign a name manually with `data-name`, and if that isn't populated then it just defaults to `'Site Menu'`.  No matter the case, even if it's omitted, your menu will not be without a label.  Adding this attribute may become more important if you have multiple menus on the page simultaneously.
 
 ```html
-<script src="https://unpkg.com/umd/makeMenuAccessible.min.js"></script>
-<script>
-  const makeMenuAccessible = MakeMenuAccessible.default
-  const menuElement = document.querySelector('.menu')
-
-  makeMenuAccessible(menuElement)
-</script>
+<nav class="menu"
+     data-name="My Menu Name"
+>
+  <!-- ... -->
+</nav>
 ```
 
 FEATURES

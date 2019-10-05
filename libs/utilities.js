@@ -30,7 +30,8 @@ export const getItemsInScope = (scopedElement, selector, options) => {
 
 // focus on the next element
 export const focus = (item, pref, useItemIndex) => {
-  const {items, anySubmenuIsExpanded} = item.parentMenu
+  const {items, anySubmenuIsExpanded, toggler} = item.parentMenu
+  const itemIsToggler = toggler === item
   const itemIndex = items.findIndex(i => i === item)
   const activeIndex = useItemIndex ?
     itemIndex :
@@ -44,7 +45,7 @@ export const focus = (item, pref, useItemIndex) => {
     pref === 'first' ? 0 :
     pref === 'current' ? itemIndex :
     nextIndex // next by default
-  const itemToFocus = items[focusIndex]
+  const itemToFocus = itemIsToggler ? toggler : items[focusIndex]
   itemToFocus.element.focus()
   menuObject.activeMenuItem = {
     item: itemToFocus,
@@ -67,4 +68,14 @@ export const toggleExpanded = (item, pref, shouldExpand, withFocus) => {
   if (pref === 'none' || !withFocus) return
   if (shouldExpand) return focus(itemsInSubmenu[0], pref)
   focus(item, pref, true)
+}
+
+// set unique id on a given element
+let idIndex = 0
+export const setUniqueId = el => {
+  if (!el || el.id) return el ? el.id : null
+  const idName = el.textContent.replace(/[ \r\n]/g, '').slice(0, 10)
+  const id = !idIndex ? idName : `${idName}_${idIndex}`
+  const elExists = !!document.querySelector(`#${id}`)
+  return el.id = elExists ? setUniqueId(idName) : id
 }

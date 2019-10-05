@@ -16,13 +16,40 @@ export default {
       }) :
       getMenuOptions(element)
 
+    const {mobile} = options
+    const mobileWidth =
+      mobile && mobile.split(' ')[2] || options.mobileWidth || 0
+
     const menu = {
       element,
       options,
       parentItem,
       parentMenu,
+      mobileWidth,
       items: [],
       anySubmenuIsExpanded: false,
+    }
+
+    const togglerElement = document.getElementById(options.menuToggler)
+    if (togglerElement && !parentItem) {
+      const isMobile =
+        mobile && mobile.split(' ')[3] === 'true' ||
+        options.mobileToggler === 'true'
+
+      menu.toggler = {
+        element: togglerElement,
+        parentMenu: menu,
+        attachedMenu: menu,
+        isMobile,
+        alignment: togglerElement.dataset.alignment || 'top',
+        expand(pref, withFocus = true) { toggleExpanded(this, pref, true, withFocus) },
+        collapse(pref, withFocus = true) {
+          const screenIsMobile = window.innerWidth < mobileWidth
+          if (!isMobile || isMobile && screenIsMobile)
+            toggleExpanded(this, pref, false, withFocus)
+        },
+      }
+      menu.parentItem = menu.toggler
     }
 
     this.menus.push(menu)

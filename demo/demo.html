@@ -7,10 +7,12 @@
 
 <body>
 
-  <nav class="menu" data-mobile="vertical left 800">
-    <h1 class="title">Organization Name</h1>
-    <a href="#" class="mobileToggler">Menu</a>
-    <ul class="mainMenu">
+  <nav class="menu">
+    <a id="MenuToggler" href="#" class="mobileToggler">Menu</a>
+    <ul class="mainMenu"
+        data-mobile="vertical left 800 true"
+        data-menu-toggler="MenuToggler"
+    >
       <li class="menuItem"><a href="">Home</a></li>
       <li class="menuItem">
         <a>About</a>

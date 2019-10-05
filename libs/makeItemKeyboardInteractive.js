@@ -2,11 +2,11 @@ import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys, firstKeys, lastKey
 import menuObject from './menuObject.js'
 
 // function for enabling keyboard navigation on a single item
-export default (item, options, keydownCallback) => {
+export default (item, options, keydownCallback = () => {}) => {
   const {element} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
-  const {parentItem} = itemParentMenu
+  const {toggler, parentItem} = itemParentMenu
   const {menu, mobile} = options
 
   // menu options
@@ -36,24 +36,38 @@ export default (item, options, keydownCallback) => {
     if (itemParentMenu) itemParentMenu.anySubmenuIsExpanded = false
     expandedItems.forEach(currentItem =>
       currentItem.collapse && currentItem.collapse('current', withFocus))
+    
+    // collapse the toggler if applicable
+    const {toggler} = itemParentMenu
+    if (toggler) toggler.collapse('current', withFocus)
   }
 
   // determine the action to take based on the key pressed
   element.addEventListener('keydown', event => {
 
-    // get the key maps for the current layout
-    const hasMobileOptions = !!(mobileLayout || mobileAlignment || mobileWidth)
-    const isMobile = hasMobileOptions && window.innerWidth < mobileWidth
-    const {nextKeys, prevKeys} = focusKeyMap[isMobile ? mobileLayout : layout]
-    const expandKeys = expandKeyMap[isMobile ? mobileAlignment : alignment]
-    const collapseKeyMap = parentMenuOptions ?
-      focusKeyMap[isMobile ? parentMobileLayout : parentMenuLayout] :
-      {nextKeys: [], prevKeys: []}
-
     // run the user defined event callback
     const callbackReturnVal = keydownCallback(event)
     const continueKeydown = callbackReturnVal === undefined ? true : callbackReturnVal
     if (!continueKeydown) return
+
+    // find current layout
+    const isToggler = element === (toggler && toggler.element)
+    const isMobile = !!mobileWidth && window.innerWidth < mobileWidth
+    const togglerAlignment = toggler && toggler.alignment
+    const togglerLayout = togglerAlignment === 'top' || togglerAlignment === 'bottom' ?
+      'horizontal' : 'vertical'
+    const menuLayout = isMobile ? mobileLayout : layout
+    const menuAlignment = isMobile ? mobileAlignment : alignment
+    const currentLayout = isToggler ? togglerLayout : menuLayout
+    const currentAlignment = isToggler ? togglerAlignment : menuAlignment
+    const currentParentLayout = isMobile ? parentMobileLayout : parentMenuLayout
+
+    // get the key maps for the current layout
+    const {nextKeys, prevKeys} = focusKeyMap[currentLayout]
+    const expandKeys = expandKeyMap[currentAlignment]
+    const collapseKeyMap = parentMenuOptions ?
+      focusKeyMap[currentParentLayout] :
+      {nextKeys: [], prevKeys: []}
 
     // check if the key pressed should use default behavior
     const shouldUseDefault = element.href && defaultKeys.includes(event.key)
