@@ -6,9 +6,9 @@
   "module": "src/index.js",
   "unpkg": "umd/makeMenuAccessible.min.js",
   "files": [
-    "./src",
-    "./dist",
-    "./umd"
+    "./src/",
+    "./dist/",
+    "./umd/"
   ],
   "sideEffects": false,
   "scripts": {
