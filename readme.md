@@ -1,6 +1,6 @@
 QUICK START
 ===
-In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.  After running `npm i make-menu-accessible` ...
+In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  **Remember**: this does *not* toggle the visibility of expanded menus, [skip to the end](#what-it-does-not-do) to see why.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.  After running `npm i make-menu-accessible` ...
 
 ```html
 <nav class="menu">
@@ -200,11 +200,13 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 **ATTRIBUTES**
   1. Sets roles for `menubar`, `menu`, and `menuitem`, and sets the role of the menu toggler to `button` if it's present.  Anything that isn't one of those is set to `none`.
-  2. Sets `tabindex="0"` on only the items in the currently visible menus, and `tabindex="-1"` on all items inside hidden menus.
+  2. Sets `tabindex="0"` on only the first item in the menu, and `tabindex="-1"` on all others.
   3. Sets `aria-haspopup` on links that appear to be associated with a submenu, and the menu toggler if one is present.
   4. Sets `aria-expanded="false"` by default on all links associated with a submenu, and toggles that value to `"true"` if the user expands it with the keyboard.  Same for the menu toggler if one is present.
   5. Sets `aria-hidden="true"` by default on all submenus, and toggles that value to `"false"` if the user expands it with the keyboard.  Same for the entire menu if a menu toggler is present and active.
-  6. Sets `aria-label` or `aria-labelledby` as outlined in the [labels](#labels) section of this document.
+  6. Sets a unique ID on the menu element, only if it doesn't already have one.
+  7. Sets `aria-controls` on the menu toggler, as the ID of the menu element.
+  8. Sets `aria-label` or `aria-labelledby` as outlined in the [labels](#labels) section of this document.
 
 **KEYBOARD NAVIGATION**
   1. After focus is brought to the menu, the user may browse through each item in the current menu by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.  Pressing tab will collapse all menus and move to the next focusable item on the page.
@@ -218,3 +220,21 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 **FLEXIBILITY**
 
 Ideally, this function should work with any menu structure you prefer.  That means it's pretty good at figuring out whether or not you're using [listless navigation](https://css-tricks.com/navigation-in-lists-to-be-or-not-to-be/), where your navigation links are actually nested, and in most cases it should just work out of the box.  Even if your menu items are nested several layers deep inside your submenu, the code is built to ignore any parents that are not a submenu and make any associations from there.
+
+WHAT IT DOES *NOT* DO
+===
+The appearance of your menu is not a concern of JavaScript, but of CSS.  You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
+
+```css
+.submenu[aria-hidden="true"] {
+  display: none;
+}
+
+.menuItem[aria-expanded="true"]::after {
+  content: ' \25BE'; /* downward-facing trangle */
+}
+```
+
+This package assumes you already have a style sheet established for your project.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
+
+Also worth noting, these attributes will not (and should not) be toggled when hovering or clicking with a mouse.  This would be overwhelming for users with screen readers, so I've opted out of doing so here.  In other words, your styles may need to depend on `:hover` and class toggles in addition to (but independently from) the aria attributes.
