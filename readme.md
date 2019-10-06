@@ -226,8 +226,12 @@ WHAT IT DOES *NOT* DO
 The appearance of your menu is not a concern of JavaScript, but of CSS.  You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
 
 ```css
-.submenu[aria-hidden="true"] {
-  display: none;
+.submenu {
+  display: none; /* hide submenus by default */
+}
+
+.submenu[aria-hidden="false"] {
+  display: block;
 }
 
 .menuItem[aria-expanded="true"]::after {
@@ -237,4 +241,11 @@ The appearance of your menu is not a concern of JavaScript, but of CSS.  You can
 
 This package assumes you already have a style sheet established for your project.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
 
-Also worth noting, these attributes will not (and should not) be toggled when hovering or clicking with a mouse.  This would be overwhelming for users with screen readers, so I've opted out of doing so here.  In other words, your styles may need to depend on `:hover` and class toggles in addition to (but independently from) the aria attributes.
+Also worth noting, these attributes will not (and should not) be toggled when hovering or clicking with a mouse.  This would be overwhelming for users with screen readers, so I've opted out of doing so here.  In other words, your styles may need to depend on `:hover` and class toggles in addition to (but independently from) the aria attributes.  For example, the following CSS will show submenus both when they are expanded by the keyboard, and when they are hovered by the cursor.
+
+```css
+.menuItem:hover > .submenu,
+.submenu[aria-hidden="false"] {
+  display: block;
+}
+```
