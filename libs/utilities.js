@@ -74,7 +74,7 @@ export const toggleExpanded = (item, pref, shouldExpand, withFocus) => {
 let idIndex = 0
 export const setUniqueId = el => {
   if (!el || el.id) return el ? el.id : null
-  const idName = el.textContent.replace(/[ \r\n]/g, '').slice(0, 10)
+  const idName = el.textContent.replace(/[\s]/g, '').slice(0, 10)
   const id = !idIndex ? idName : `${idName}_${idIndex}`
   const elExists = !!document.querySelector(`#${id}`)
   return el.id = elExists ? setUniqueId(idName) : id
