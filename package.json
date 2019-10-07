@@ -1,6 +1,6 @@
 {
   "name": "make-menu-accessible",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "A package that converts any menu into one that is keyboard and screen reader accessible.",
   "main": "dist/makeMenuAccessible.min.js",
   "module": "src/index.js",
