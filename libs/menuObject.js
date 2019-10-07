@@ -10,11 +10,11 @@ export default {
   filterTimeout: null,
   addMenu(element, parentItem, parentMenu) {
     const options = parentItem ?
-      getMenuOptions(element, {
+      getMenuOptions(element, parentMenu, {
         layout: 'vertical',
         alignment: 'left',
       }) :
-      getMenuOptions(element)
+      getMenuOptions(element, parentMenu)
 
     const {mobile} = options
     const mobileWidth =
@@ -76,9 +76,11 @@ export default {
     const submenuElement =
       submenu ?
       document.getElementById(submenu) :
-      nextSiblingIsSubmenu && nextSibling ||
       element.querySelector(submenuSelector) ||
+      nextSiblingIsSubmenu && nextSibling ||
       siblings.find(el => el.matches(submenuSelector))
+
+    console.log(submenuElement)
       
     const simpleItem = {
       element,

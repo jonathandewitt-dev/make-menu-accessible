@@ -1,18 +1,15 @@
 import menuObject from './menuObject.js'
 
 // get these options from the data attributes or fall back on defaults
-export const getMenuOptions = (menuElement, defaults = {}) => {
-
-  const parentMenuOptions = []
-  menuObject.menus.forEach(menu => 
-    parentMenuOptions.push(menu.options))
+export const getMenuOptions = (menuElement, parentMenu = {}, defaults = {}) => {
+  const parentMenuOptions = parentMenu.options || {}
 
   return Object.assign({
     submenuSelector: '.submenu',
     itemSelector: '.menuItem',
     layout: 'horizontal',
     alignment: 'top',
-  }, ...parentMenuOptions, defaults, menuElement.dataset)
+  }, parentMenuOptions, defaults, menuElement.dataset)
 }
 
 // get only the items that are not nested in submenus, relative to the current scope
