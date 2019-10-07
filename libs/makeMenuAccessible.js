@@ -56,7 +56,7 @@ export default (element, keydownCallback = () => {}) => {
   setUniqueId(element)
 
   // make the overall menu toggler accessible
-  makeMenuTogglerAcessible(menu)
+  makeMenuTogglerAcessible(menu, keydownCallback)
   
   // add attributes and keyboard functionality to this menu and all its submenus
   menus.forEach(currentMenu =>
