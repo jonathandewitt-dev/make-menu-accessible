@@ -79,8 +79,6 @@ export default {
       element.querySelector(submenuSelector) ||
       nextSiblingIsSubmenu && nextSibling ||
       siblings.find(el => el.matches(submenuSelector))
-
-    console.log(submenuElement)
       
     const simpleItem = {
       element,
