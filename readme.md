@@ -1,6 +1,10 @@
 QUICK START
 ===
-In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  **Remember**: this does *not* toggle the visibility of expanded menus, [skip to the end](#what-it-does-not-do) to see why.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.  After running `npm i make-menu-accessible` ...
+In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.
+
+**Remember**: this does *not* toggle the visibility of expanded menus, [skip to the end](#what-it-does-not-do) to see why.
+
+After running `npm i make-menu-accessible` ...
 
 ```html
 <nav class="menu">
@@ -23,6 +27,8 @@ const menuElement = document.querySelector('.menu')
 
 makeMenuAccessible(menuElement)
 ```
+
+That's it!  If your menu is a standard format and non-responsive, you now have an accessible menu.  If it is *not* the average conventional navigation menu, have no fear, there's plenty of options available to cater to your needs.  Read on to see what they are.
 
 **Note:** the main function is both a *named* and *default* export, so you have the option of importing it as any name that fits your project's namespace.  Both `import yourFnName from 'make-menu-accessible'` and `import {makeMenuAccessible} from 'make-menu-accessible'` are valid.
 
@@ -223,7 +229,9 @@ Ideally, this function should work with any menu structure you prefer.  That mea
 
 WHAT IT DOES *NOT* DO
 ===
-The appearance of your menu is not a concern of JavaScript, but of CSS.  You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
+This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
+
+You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
 
 ```css
 .submenu {
@@ -236,16 +244,5 @@ The appearance of your menu is not a concern of JavaScript, but of CSS.  You can
 
 .menuItem[aria-expanded="true"]::after {
   content: ' \25BE'; /* downward-facing trangle */
-}
-```
-
-This package assumes you already have a style sheet established for your project.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
-
-Also worth noting, these attributes will not (and should not) be toggled when hovering or clicking with a mouse.  This would be overwhelming for users with screen readers, so I've opted out of doing so here.  In other words, your styles may need to depend on `:hover` and class toggles in addition to (but independently from) the aria attributes.  For example, the following CSS will show submenus both when they are expanded by the keyboard, and when they are hovered by the cursor.
-
-```css
-.menuItem:hover > .submenu,
-.submenu[aria-hidden="false"] {
-  display: block;
 }
 ```

@@ -37,13 +37,22 @@ const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
 }
 
 export default (element, keydownCallback = () => {}) => {
+
+  // error handling for a bad element parameter
+  if (!element || !(element instanceof HTMLElement))
+    throw new Error(`Expected \`HTMLElement\`, instead got \`${element}\`.`)
+
   const menu = menuObject.addMenu(element)
   const {itemSelector} = menu.options
   const {menus} = menuObject
 
-  // blanket all contained elements with defaults
+  // error handling for empy menus
   const allChildren = [...element.querySelectorAll('*')]
-  const firstItem = allChildren.find(el => el.matches(itemSelector))
+  const firstItem = element.querySelector(itemSelector)
+  if (!firstItem)
+    throw new Error(`Expected the menu to contain at least one item.  Please nest at least one element that matches the selector '${itemSelector}'`)
+
+  // blanket all contained elements with defaults
   const firstLink = firstItem.querySelector('a') || firstItem
   allChildren.forEach(el => {
 
