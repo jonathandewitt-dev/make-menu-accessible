@@ -36,7 +36,9 @@ const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
   })
 }
 
-export default (element, keydownCallback = () => {}) => {
+
+
+const makeMenuAccessible = (element, keydownCallback = () => {}) => {
 
   // error handling for a bad element parameter
   if (!element || !(element instanceof HTMLElement))
@@ -84,4 +86,20 @@ export default (element, keydownCallback = () => {}) => {
     }
     allItems.forEach(item => item.collapse && item.collapse('none'))
   })
+
+  // handle changes to the DOM after running this function
+  const observerConfig = {childList: true, subtree: true}
+  const menuObserver = new MutationObserver((mutations, observer) => {
+    const newElement = element.cloneNode(true)
+    const parent = element.parentElement
+    console.warn('The menu has changed, updating the accessibility...')
+    parent.replaceChild(newElement, element)
+    observer.disconnect()
+    observer.observe(newElement, observerConfig)
+    menuObject.menus = []
+    makeMenuAccessible(newElement, keydownCallback)
+  })
+  menuObserver.observe(element, observerConfig)
 }
+
+export default makeMenuAccessible

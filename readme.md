@@ -225,7 +225,8 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 **FLEXIBILITY**
 
-Ideally, this function should work with any menu structure you prefer.  That means it's pretty good at figuring out whether or not you're using [listless navigation](https://css-tricks.com/navigation-in-lists-to-be-or-not-to-be/), where your navigation links are actually nested, and in most cases it should just work out of the box.  Even if your menu items are nested several layers deep inside your submenu, the code is built to ignore any parents that are not a submenu and make any associations from there.
+  1. Ideally, this function should work with any menu structure you prefer.  That means it's pretty good at figuring out whether or not you're using [listless navigation](https://css-tricks.com/navigation-in-lists-to-be-or-not-to-be/), where your navigation links are actually nested, and in most cases it should just work out of the box.  Even if your menu items are nested several layers deep inside your submenu, the code is built to ignore any parents that are not a submenu and make any associations from there.
+  2. Hopefully your menu will be readily loaded by the time you run this function, but sometimes it's unavoidable and items may be dynamically added to or removed from your menu.  If this is the case, this function will adapt accordingly by watching the DOM for changes, then respond by automatically resetting the element and rerunning the function again with your original arguments.
 
 WHAT IT DOES *NOT* DO
 ===
