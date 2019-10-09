@@ -75,5 +75,6 @@ export const setUniqueId = el => {
   const idName = text.length ? text : 'id'
   const id = !idIndex ? idName : `${idName}_${idIndex}`
   const elExists = !!document.querySelector(`#${id}`)
-  return el.id = elExists ? setUniqueId(idName) : id
+  idIndex++
+  return el.id = elExists ? setUniqueId(el) : id
 }

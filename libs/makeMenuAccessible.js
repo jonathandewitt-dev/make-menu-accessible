@@ -96,7 +96,7 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
     parent.replaceChild(newElement, element)
     observer.disconnect()
     observer.observe(newElement, observerConfig)
-    menuObject.menus = []
+    menuObject.menus = menuObject.menus.filter(m => m.overallMenu !== menu)
     makeMenuAccessible(newElement, keydownCallback)
   })
   menuObserver.observe(element, observerConfig)

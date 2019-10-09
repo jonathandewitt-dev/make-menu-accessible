@@ -8,7 +8,7 @@ export default {
   },
   filterText: '',
   filterTimeout: null,
-  addMenu(element, parentItem, parentMenu) {
+  addMenu(element, parentItem, parentMenu, overallMenu) {
     const options = parentItem ?
       getMenuOptions(element, parentMenu, {
         layout: 'vertical',
@@ -26,6 +26,7 @@ export default {
       parentItem,
       parentMenu,
       mobileWidth,
+      overallMenu,
       items: [],
       anySubmenuIsExpanded: false,
     }
@@ -55,13 +56,14 @@ export default {
     this.menus.push(menu)
 
     // add items to this menu
+    if (!overallMenu) menu.overallMenu = menu
     const {itemSelector} = options
     getItemsInScope(element, itemSelector, options).forEach(
-      item => this.addItem(item, menu))
+      item => this.addItem(item, menu, overallMenu))
 
     return menu
   },
-  addItem(itemElement, parentMenu) {
+  addItem(itemElement, parentMenu, overallMenu) {
     const options = parentMenu.options
     const {submenu} = itemElement.dataset
     const {submenuSelector} = options
@@ -91,7 +93,7 @@ export default {
       expand(pref, withFocus = true) { toggleExpanded(this, pref, true, withFocus) },
       collapse(pref, withFocus = true) { toggleExpanded(this, pref, false, withFocus) },
     })
-    itemWithMenu.attachedMenu = this.addMenu(submenuElement, itemWithMenu, parentMenu)
+    itemWithMenu.attachedMenu = this.addMenu(submenuElement, itemWithMenu, parentMenu, overallMenu)
   
     parentMenu.items.push(itemWithMenu)
   },
