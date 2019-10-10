@@ -70,7 +70,8 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
   makeMenuTogglerAcessible(menu, keydownCallback)
   
   // add attributes and keyboard functionality to this menu and all its submenus
-  menus.forEach(currentMenu =>
+  const currentMenus = menus.filter(m => m.overallMenu === menu)
+  currentMenus.forEach(currentMenu =>
     makeEachMenuAccessible(currentMenu, keydownCallback, firstLink))
 
   // make any window click collapse all menus

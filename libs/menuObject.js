@@ -59,12 +59,12 @@ export default {
     if (!overallMenu) menu.overallMenu = menu
     const {itemSelector} = options
     getItemsInScope(element, itemSelector, options).forEach(
-      item => this.addItem(item, menu, overallMenu))
+      item => this.addItem(item, menu))
 
     return menu
   },
-  addItem(itemElement, parentMenu, overallMenu) {
-    const options = parentMenu.options
+  addItem(itemElement, parentMenu) {
+    const {options, overallMenu} = parentMenu
     const {submenu} = itemElement.dataset
     const {submenuSelector} = options
 
