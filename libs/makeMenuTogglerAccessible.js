@@ -1,4 +1,5 @@
-import makeItemKeyboardInteractive from "./makeItemKeyboardInteractive.js"
+import makeItemKeyboardInteractive from './makeItemKeyboardInteractive.js'
+import {addEvent} from './utilities.js'
 
 export default (menu, keydownCallback) => {
   const {element, toggler, options} = menu
@@ -12,7 +13,7 @@ export default (menu, keydownCallback) => {
   togglerElement.setAttribute('aria-controls', element.id)
   togglerElement.setAttribute('tabindex', '0')
   element.setAttribute('aria-hidden', 'true')
-  makeItemKeyboardInteractive(toggler, options, keydownCallback)
+  makeItemKeyboardInteractive(toggler, options, menu, keydownCallback)
   
   // if the toggler is mobile-only, hide and show dynamically
   if (!toggler.isMobile) return
@@ -28,5 +29,9 @@ export default (menu, keydownCallback) => {
   }
   
   toggleMenu() // initialize
-  window.addEventListener('resize', toggleMenu)
+  addEvent(menu, {
+    element: window,
+    event: 'resize',
+    callback: toggleMenu
+  })
 }

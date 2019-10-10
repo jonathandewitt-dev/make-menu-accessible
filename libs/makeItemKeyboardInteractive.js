@@ -1,8 +1,9 @@
 import {focusKeyMap, expandKeyMap, defaultKeys, collapseKeys, firstKeys, lastKeys} from './keyMaps.js'
 import menuObject from './menuObject.js'
+import {addEvent} from './utilities.js'
 
 // function for enabling keyboard navigation on a single item
-export default (item, options, keydownCallback = () => {}) => {
+export default (item, options, overallMenu, keydownCallback = () => {}) => {
   const {element} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
@@ -43,7 +44,7 @@ export default (item, options, keydownCallback = () => {}) => {
   }
 
   // determine the action to take based on the key pressed
-  element.addEventListener('keydown', event => {
+  const keydownNavigation = event => {
 
     // run the user defined event callback
     const callbackReturnVal = keydownCallback(event)
@@ -120,5 +121,12 @@ export default (item, options, keydownCallback = () => {}) => {
     // check if the key pressed should collapse all menus
     const shouldCollapse = collapseKeys.includes(event.key)
     if (shouldCollapse) collapseAll()
+  }
+
+  addEvent(overallMenu, {
+    element,
+    event: 'keydown',
+    callback: keydownNavigation
   })
+
 }

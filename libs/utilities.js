@@ -78,3 +78,20 @@ export const setUniqueId = el => {
   idIndex++
   return el.id = elExists ? setUniqueId(el) : id
 }
+
+export const addEvent = (menu, eventObj) => {
+  const {element, event, callback} = eventObj
+  element.addEventListener(event, callback)
+
+  // add event to this specific menu via the eventMap
+  const events = menuObject.eventMap.get(menu) ||
+    menuObject.eventMap.set(menu, []) && []
+  events.push({element, event, callback})
+  menuObject.eventMap.set(menu, events)
+}
+
+export const removeAllEvents = menu => {
+  const events = menuObject.eventMap.get(menu) || []
+  events.forEach(({element, event, callback}) =>
+      element.removeEventListener(event, callback))
+}

@@ -6,6 +6,7 @@ export default {
     item: null,
     index: 0,
   },
+  eventMap: new Map(),
   filterText: '',
   filterTimeout: null,
   addMenu(element, parentItem, parentMenu, overallMenu) {

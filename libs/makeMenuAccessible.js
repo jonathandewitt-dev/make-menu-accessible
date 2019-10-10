@@ -1,7 +1,7 @@
 import menuObject from './menuObject.js'
 import makeItemAccessible from './makeItemAccessible.js'
 import makeItemKeyboardInteractive from './makeItemKeyboardInteractive.js'
-import {setUniqueId} from './utilities.js'
+import {setUniqueId, addEvent, removeAllEvents} from './utilities.js'
 import makeMenuTogglerAcessible from './makeMenuTogglerAccessible.js'
 
 const addLabelTo = menu => {
@@ -20,7 +20,7 @@ const addLabelTo = menu => {
 }
 
 const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
-  const {element, items, parentItem, options} = menu
+  const {element, items, parentItem, options, overallMenu} = menu
 
   // Make sure the menu is labelled
   addLabelTo(menu)
@@ -32,7 +32,7 @@ const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
   // make the items accessible
   items.forEach(item => {
     makeItemAccessible(item, firstLink)
-    makeItemKeyboardInteractive(item, options, keydownCallback)
+    makeItemKeyboardInteractive(item, options, overallMenu, keydownCallback)
   })
 }
 
@@ -75,7 +75,7 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
     makeEachMenuAccessible(currentMenu, keydownCallback, firstLink))
 
   // make any window click collapse all menus
-  window.addEventListener('click', event => {
+  const collapseAllMenus = event => {
     if (event.target.matches(itemSelector)) return
     const allItems = menuObject.menus.reduce((items, currentMenu) => {
       items.push(...currentMenu.items)
@@ -86,19 +86,20 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
       index: 0,
     }
     allItems.forEach(item => item.collapse && item.collapse('none'))
+  }
+  addEvent(menu, {
+    element: window,
+    event: 'click',
+    callback: collapseAllMenus
   })
 
   // handle changes to the DOM after running this function
   const observerConfig = {childList: true, subtree: true}
   const menuObserver = new MutationObserver((mutations, observer) => {
-    const newElement = element.cloneNode(true)
-    const parent = element.parentElement
     console.warn('The menu has changed, updating the accessibility...')
-    parent.replaceChild(newElement, element)
-    observer.disconnect()
-    observer.observe(newElement, observerConfig)
+    removeAllEvents(menu)
     menuObject.menus = menuObject.menus.filter(m => m.overallMenu !== menu)
-    makeMenuAccessible(newElement, keydownCallback)
+    makeMenuAccessible(element, keydownCallback)
   })
   menuObserver.observe(element, observerConfig)
 }
