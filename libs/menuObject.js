@@ -69,22 +69,19 @@ export default {
     const {submenu} = itemElement.dataset
     const {submenuSelector} = options
 
-    // find the link that belongs to this item, if any
-    const element = itemElement.querySelector('a') || itemElement
-
     // find the submenu that belongs to this item, if any
-    const siblings = [...element.parentElement.children]
-    const nextSibling = element.nextElementSibling
+    const siblings = [...itemElement.parentElement.children]
+    const nextSibling = itemElement.nextElementSibling
     const nextSiblingIsSubmenu = nextSibling && nextSibling.matches(submenuSelector)
     const submenuElement =
       submenu ?
       document.getElementById(submenu) :
-      element.querySelector(submenuSelector) ||
+      itemElement.querySelector(submenuSelector) ||
       nextSiblingIsSubmenu && nextSibling ||
       siblings.find(el => el.matches(submenuSelector))
       
     const simpleItem = {
-      element,
+      element: itemElement.querySelector('a') || itemElement,
       parentMenu,
       focus(pref) { focus(this, pref) },
     }
