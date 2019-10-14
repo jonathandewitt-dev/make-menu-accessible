@@ -14,10 +14,9 @@ const addLabelTo = menu => {
   // 2. any nested heading
   // 3. parent item's text
   // 4. default fallback
-  setUniqueId(title)
   const label = {
     label: name || parentText || 'Site Menu',
-    labelledBy: title ? title.id : '',
+    labelledBy: title ? setUniqueId(title) : '',
   }
   const key = name ? 'label' : title ? 'labelledby' : 'label'
   element.setAttribute(`aria-${key}`, label[key])
