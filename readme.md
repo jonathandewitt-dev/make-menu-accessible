@@ -190,7 +190,7 @@ makeMenuAccessible(menuElement, event => {
 
 LABELS
 ===
-So you know you need `aria-label` on your menu, but what are the rules?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, it searches for a heading tag nested inside.  If it finds one, it will ensure your title has a unique ID if it doesn't already have one, and then automatically set the `aria-labelledby` attribute on your menu.  But not all menus contain a heading tag, as they probably shouldn't.  You can also assign a name manually with `data-name`, and if that isn't populated then it just defaults to `'Site Menu'`.  No matter the case, even if it's omitted, your menu will not be without a label.  Adding this attribute may become more important if you have multiple menus on the page simultaneously.
+So you know it's good to label your menu, but what are the rules?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, this function searches for a heading tag nested inside.  If it finds one, it will automatically set the `aria-labelledby` attribute on your menu.  If no heading tag is found, it will look for the parent item's text and use it as the `aria-label`, (which may be the menu toggle button if it is not a submenu.)  If there is no parent item, it will fall back on the default `'Site Menu'`.  You can also override all of that if you'd like to assign a name manually by adding the `data-name` attribute.  In most cases, you can omit this attribute and the label will be automatically applied.
 
 ```html
 <nav class="menu"

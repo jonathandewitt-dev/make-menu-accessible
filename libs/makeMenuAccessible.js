@@ -5,14 +5,18 @@ import {setUniqueId, addEvent, removeAllEvents} from './utilities.js'
 import makeMenuTogglerAcessible from './makeMenuTogglerAccessible.js'
 
 const addLabelTo = menu => {
-  const {element, name} = menu
+  const {element, name, parentItem} = menu
   const title = element.querySelector('h1, h2, h3, h4, h5, h6')
+  const parentText = parentItem && parentItem.element.textContent
 
   // prioritize the label as follows:
-  // 1. user defined name, 2. any nested heading, 3. default fallback
+  // 1. user defined name
+  // 2. any nested heading
+  // 3. parent item's text
+  // 4. default fallback
   setUniqueId(title)
   const label = {
-    label: name || 'Site Menu',
+    label: name || parentText || 'Site Menu',
     labelledBy: title ? title.id : '',
   }
   const key = name ? 'label' : title ? 'labelledby' : 'label'
@@ -20,13 +24,13 @@ const addLabelTo = menu => {
 }
 
 const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
-  const {element, items, parentItem, options, overallMenu} = menu
+  const {element, items, options, overallMenu} = menu
 
   // Make sure the menu is labelled
   addLabelTo(menu)
 
   // give the current menu a role
-  const role = parentItem ? 'menu' : 'menubar'
+  const role = menu === overallMenu ? 'menubar' : 'menu'
   element.setAttribute('role', role)
   
   // make the items accessible
