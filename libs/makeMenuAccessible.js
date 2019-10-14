@@ -7,7 +7,7 @@ import makeMenuTogglerAcessible from './makeMenuTogglerAccessible.js'
 const addLabelTo = menu => {
   const {element, name, parentItem} = menu
   const title = element.querySelector('h1, h2, h3, h4, h5, h6')
-  const parentText = parentItem && parentItem.element.textContent
+  const parentText = parentItem && parentItem.element.textContent.trim()
 
   // prioritize the label as follows:
   // 1. user defined name
