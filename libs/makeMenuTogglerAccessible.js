@@ -1,4 +1,4 @@
-import makeItemKeyboardInteractive from './makeItemKeyboardInteractive.js'
+import makeItemInteractive from './makeItemInteractive.js'
 import {addEvent} from './utilities.js'
 
 export default (menu, keydownCallback) => {
@@ -13,7 +13,7 @@ export default (menu, keydownCallback) => {
   togglerElement.setAttribute('aria-controls', element.id)
   togglerElement.setAttribute('tabindex', '0')
   element.setAttribute('aria-hidden', 'true')
-  makeItemKeyboardInteractive(toggler, options, menu, keydownCallback)
+  makeItemInteractive(toggler, options, menu, keydownCallback)
   
   // if the toggler is mobile-only, hide and show dynamically
   if (!toggler.isMobile) return

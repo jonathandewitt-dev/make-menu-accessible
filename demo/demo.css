@@ -58,7 +58,6 @@
   white-space: nowrap;
 }
 
-.menuItem:hover > .submenu,
 .submenu[aria-hidden="false"] {
   display: block;
 }

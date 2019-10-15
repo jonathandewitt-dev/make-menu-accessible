@@ -4,7 +4,7 @@ import {addEvent} from './utilities.js'
 
 // function for enabling keyboard navigation on a single item
 export default (item, options, overallMenu, keydownCallback = () => {}) => {
-  const {element} = item
+  const {element, attachedMenu} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
   const {toggler, parentItem} = itemParentMenu
@@ -123,10 +123,33 @@ export default (item, options, overallMenu, keydownCallback = () => {}) => {
     if (shouldCollapse) collapseAll()
   }
 
+  // expand/collapse submenus when item is being hovered
+  const mouseNavigation = event => {
+    clearTimeout(item.hoverTimeout)
+    const isEntering = event.type === 'mouseenter'
+    const expandOrCollapse = isEntering ? 'expand' : 'collapse'
+    const method = () => item[expandOrCollapse]('none')
+    if (isEntering) method()
+    else item.hoverTimeout = setTimeout(method, 50)
+  }
+
+  // register the keyboard events
   addEvent(overallMenu, {
     element,
     event: 'keydown',
     callback: keydownNavigation
   })
+
+  // register the mouse events
+  if (!attachedMenu) return
+  const mouseEvents = ['mouseenter', 'mouseleave']
+  const elements = [element, attachedMenu.element]
+  mouseEvents.forEach(event => elements.forEach(el => {
+    addEvent(overallMenu, {
+      element: el,
+      event,
+      callback: mouseNavigation
+    })
+  }))
 
 }

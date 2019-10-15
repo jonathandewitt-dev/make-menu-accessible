@@ -1,6 +1,6 @@
 import menuObject from './menuObject.js'
 import makeItemAccessible from './makeItemAccessible.js'
-import makeItemKeyboardInteractive from './makeItemKeyboardInteractive.js'
+import makeItemInteractive from './makeItemInteractive.js'
 import {setUniqueId, addEvent, removeAllEvents} from './utilities.js'
 import makeMenuTogglerAcessible from './makeMenuTogglerAccessible.js'
 
@@ -35,7 +35,7 @@ const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
   // make the items accessible
   items.forEach(item => {
     makeItemAccessible(item, firstLink)
-    makeItemKeyboardInteractive(item, options, overallMenu, keydownCallback)
+    makeItemInteractive(item, options, overallMenu, keydownCallback)
   })
 }
 
