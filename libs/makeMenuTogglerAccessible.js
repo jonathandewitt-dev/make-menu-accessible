@@ -1,7 +1,7 @@
 import makeItemInteractive from './makeItemInteractive.js'
 import {addEvent} from './utilities.js'
 
-export default (menu, keydownCallback) => {
+export default (menu, customCallback) => {
   const {element, toggler, options} = menu
   const {mobile} = options
   if (!toggler) return
@@ -13,7 +13,7 @@ export default (menu, keydownCallback) => {
   togglerElement.setAttribute('aria-controls', element.id)
   togglerElement.setAttribute('tabindex', '0')
   element.setAttribute('aria-hidden', 'true')
-  makeItemInteractive(toggler, options, menu, keydownCallback)
+  makeItemInteractive(toggler, options, menu, customCallback)
   
   // if the toggler is mobile-only, hide and show dynamically
   if (!toggler.isMobile) return
@@ -29,9 +29,12 @@ export default (menu, keydownCallback) => {
   }
   
   toggleMenu() // initialize
+
+  // reapply the menu toggle when the window is resized
   addEvent(menu, {
     element: window,
     event: 'resize',
     callback: toggleMenu
   })
+  
 }

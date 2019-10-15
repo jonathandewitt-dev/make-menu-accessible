@@ -15,7 +15,9 @@ export default {
         layout: 'vertical',
         alignment: 'left',
       }) :
-      getMenuOptions(element, parentMenu)
+      getMenuOptions(element, parentMenu, {
+        mobileClick: 'true',
+      })
 
     const {mobile} = options
     const mobileWidth =

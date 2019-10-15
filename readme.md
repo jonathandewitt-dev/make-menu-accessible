@@ -168,9 +168,39 @@ But wait, one of the most common formats on the web is to use a toggle button *s
 * Just like the menus, possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
 * You may also use a fourth argument in the shorthand syntax `data-mobile`, instead of `data-mobile-toggler`.  e.g. `data-mobile="vertical left 500 true"`.
 
-THE KEYDOWN EVENT
+MOUSE OPTIONS
 ===
-This function uses `event.stopPropagation()` on the `'keydown'` event in order to run properly, avoiding multiple triggers on all the element's parents.  If you need to add another callback to the `'keydown'` event on any menu item, you can use the second argument of the main function to feed it your custom callback.  If you give your callback a return value of false, it will not run the rest of the callback set by this package.  If you don't provide any return value, it defaults to true.
+The default behavior is to expand a menu when the mouse hovers over the parent item.  If your menu items should expand or collapse on clicks (or taps) instead, you can use `data-click="true"`.  If this is set to true, parent items that double as links will only follow the link on the second click.
+
+```html
+<nav class="menu"
+     data-click="true"
+>
+  <!-- ... -->
+</nav>
+```
+
+Again there is a mobile option for this called `data-mobile-click`, and the default for this is true, because devices at that size are likely to have touch screens.  Remember, this will only become active if you provide a `mobile-width`.
+
+```html
+<nav class="menu"
+     data-mobile-click="true"
+>
+  <!-- ... -->
+</nav>
+```
+
+* Even still, you may use the shorthand by passing a fifth argument to `data-mobile`, instead of `data-mobile-click`.  e.g. `data-mobile="vertical left 500 true true"`.
+
+THE BROWSER EVENTS
+===
+This function may use `event.stopPropagation()` on any one of the following events in order to run properly, avoiding multiple triggers on all the element's parents.
+  - `'keydown'`
+  - `'click'`
+  - `'mouseenter'`
+  - `'mouseleave'`
+
+If you need to add another callback to one of these events on any menu item, you can use the second argument of the main function to feed it your custom callback.  You can determine which event is being intercepted by checking `event.type`.  If you give your callback a return value of false, it will cancel the rest of the event listener added by this package.  If you don't provide any return value, it defaults to true.
 
 ```js
 import makeMenuAccessible from 'make-menu-accessible'
@@ -180,10 +210,9 @@ const menuElement = document.querySelector('.menu')
 /* ... */
 
 makeMenuAccessible(menuElement, event => {
-  event.preventDefault()
-  if (someCondition) {
+  if (event.type === 'keydown') {
     alert('My custom "keydown" callback')
-    return false
+    return false // cancels the package's callback
   }
 })
 ```
@@ -222,6 +251,10 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   5. Submenus can be collapsed by hitting the escape key.
   6. Go to the first item in a menu by hitting the home or page up keys.  Conversely, go to the last item in a menu by hitting end or page down.
   7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets a half-second after the user stops typing, so a new filter can be typed.
+
+**MOUSE NAVIGATION**
+  1. When hovering over an item with a submenu, the menu expands.
+  2. After the cursor leaves an item or its submenu, it will collapse with a 50 millisecond delay to account for any margins.
 
 **FLEXIBILITY**
 

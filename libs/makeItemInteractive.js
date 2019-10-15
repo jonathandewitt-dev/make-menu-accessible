@@ -3,7 +3,7 @@ import menuObject from './menuObject.js'
 import {addEvent} from './utilities.js'
 
 // function for enabling keyboard navigation on a single item
-export default (item, options, overallMenu, keydownCallback = () => {}) => {
+export default (item, options, overallMenu, customCallback = () => {}) => {
   const {element, attachedMenu} = item
   const itemParentMenu = item.parentMenu
   const menuParentMenu = itemParentMenu.parentMenu
@@ -20,9 +20,11 @@ export default (item, options, overallMenu, keydownCallback = () => {}) => {
     parentMenuOptions.layout)
 
   // mobile options
-  const mobileLayout = mobile && mobile.split(' ')[0] || options.mobileLayout
-  const mobileAlignment = mobile && mobile.split(' ')[1] || options.mobileAlignment
-  const mobileWidth = mobile && mobile.split(' ')[2] || options.mobileWidth
+  const mobileOptions = mobile ? mobile.split(' ') : [false, false, false, false, false]
+  const mobileLayout = mobileOptions[0] || options.mobileLayout
+  const mobileAlignment = mobileOptions[1] || options.mobileAlignment
+  const mobileWidth = mobileOptions[2] || options.mobileWidth
+  const mobileClick = mobileOptions[4] || options.mobileClick
   const parentMobileLayout = parentMenuOptions &&
     (parentMenuOptions.mobile &&
     parentMenuOptions.mobile.split(' ')[0] ||
@@ -47,7 +49,7 @@ export default (item, options, overallMenu, keydownCallback = () => {}) => {
   const keydownNavigation = event => {
 
     // run the user defined event callback
-    const callbackReturnVal = keydownCallback(event)
+    const callbackReturnVal = customCallback(event)
     const continueKeydown = callbackReturnVal === undefined ? true : callbackReturnVal
     if (!continueKeydown) return
 
@@ -124,13 +126,35 @@ export default (item, options, overallMenu, keydownCallback = () => {}) => {
   }
 
   // expand/collapse submenus when item is being hovered
+  const clickEnabled = itemParentMenu.options.click
   const mouseNavigation = event => {
-    clearTimeout(item.hoverTimeout)
-    const isEntering = event.type === 'mouseenter'
-    const expandOrCollapse = isEntering ? 'expand' : 'collapse'
+
+    // run the user defined callback first
+    const callbackReturnVal = customCallback(event)
+    const continueClick = callbackReturnVal === undefined ? true : callbackReturnVal
+    if (!continueClick) return
+    
+    // determine whether to collapse or expand based on the event
+    const isMobile = !!mobileWidth && window.innerWidth < mobileWidth
+    const clickActive = isMobile ? mobileClick === 'true' : clickEnabled
+    const isHovering = event.type === 'mouseenter'
+    const isClicking = event.type === 'click'
+    const isExpanded = item.element.getAttribute('aria-expanded') === 'true'
+    const shouldExpand = isHovering && !clickActive || isClicking && !isExpanded
+    const expandOrCollapse = shouldExpand ? 'expand' : 'collapse'
     const method = () => item[expandOrCollapse]('none')
-    if (isEntering) method()
+    
+    // collapse all submenus on the current level before expanding the new one
+    itemParentMenu.items.forEach(i => i.collapse && i.collapse('none'))
+    
+    // expand or wait 50 milliseconds to collapse
+    clearTimeout(item.hoverTimeout)
+    if (shouldExpand) method()
     else item.hoverTimeout = setTimeout(method, 50)
+
+    // only allow default click if the menu was already expanded
+    if (!isExpanded && isClicking) event.preventDefault()
+    event.stopPropagation()
   }
 
   // register the keyboard events
@@ -142,14 +166,22 @@ export default (item, options, overallMenu, keydownCallback = () => {}) => {
 
   // register the mouse events
   if (!attachedMenu) return
-  const mouseEvents = ['mouseenter', 'mouseleave']
+  const mouseEvents = clickEnabled ? ['click'] : ['mouseenter', 'mouseleave']
   const elements = [element, attachedMenu.element]
   mouseEvents.forEach(event => elements.forEach(el => {
+    if (el === toggler.element) return
     addEvent(overallMenu, {
       element: el,
       event,
       callback: mouseNavigation
     })
   }))
+
+  // register toggler click event separately
+  addEvent(overallMenu, {
+    element: toggler.element,
+    event: 'click',
+    callback: mouseNavigation,
+  })
 
 }

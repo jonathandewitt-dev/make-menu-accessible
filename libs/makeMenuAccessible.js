@@ -22,7 +22,7 @@ const addLabelTo = menu => {
   element.setAttribute(`aria-${key}`, label[key])
 }
 
-const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
+const makeEachMenuAccessible = (menu, customCallback, firstLink) => {
   const {element, items, options, overallMenu} = menu
 
   // Make sure the menu is labelled
@@ -35,13 +35,11 @@ const makeEachMenuAccessible = (menu, keydownCallback, firstLink) => {
   // make the items accessible
   items.forEach(item => {
     makeItemAccessible(item, firstLink)
-    makeItemInteractive(item, options, overallMenu, keydownCallback)
+    makeItemInteractive(item, options, overallMenu, customCallback)
   })
 }
 
-
-
-const makeMenuAccessible = (element, keydownCallback = () => {}) => {
+const makeMenuAccessible = (element, customCallback) => {
 
   // error handling for a bad element parameter
   if (!element || !(element instanceof HTMLElement))
@@ -70,12 +68,12 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
   setUniqueId(element)
 
   // make the overall menu toggler accessible
-  makeMenuTogglerAcessible(menu, keydownCallback)
+  makeMenuTogglerAcessible(menu, customCallback)
   
   // add attributes and keyboard functionality to this menu and all its submenus
   const currentMenus = menus.filter(m => m.overallMenu === menu)
   currentMenus.forEach(currentMenu =>
-    makeEachMenuAccessible(currentMenu, keydownCallback, firstLink))
+    makeEachMenuAccessible(currentMenu, customCallback, firstLink))
 
   // make any window click collapse all menus
   const collapseAllMenus = event => {
@@ -102,7 +100,7 @@ const makeMenuAccessible = (element, keydownCallback = () => {}) => {
     console.warn('The menu has changed, updating the accessibility...')
     removeAllEvents(menu)
     menuObject.menus = menuObject.menus.filter(m => m.overallMenu !== menu)
-    makeMenuAccessible(element, keydownCallback)
+    makeMenuAccessible(element, customCallback)
   })
   menuObserver.observe(element, observerConfig)
 }
