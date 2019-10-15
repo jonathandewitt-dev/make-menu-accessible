@@ -136,13 +136,18 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
     
     // determine whether to collapse or expand based on the event
     const isMobile = !!mobileWidth && window.innerWidth < mobileWidth
-    const clickActive = isMobile ? mobileClick === 'true' : clickEnabled
+    const clickActive = isMobile ? mobileClick === 'true' : clickEnabled === 'true'
     const isHovering = event.type === 'mouseenter'
     const isClicking = event.type === 'click'
     const isExpanded = item.element.getAttribute('aria-expanded') === 'true'
     const shouldExpand = isHovering && !clickActive || isClicking && !isExpanded
+    const shouldCollapse = !isHovering && !clickActive || isClicking && isExpanded
     const expandOrCollapse = shouldExpand ? 'expand' : 'collapse'
     const method = () => item[expandOrCollapse]('none')
+
+    // only run if necessary
+    const shouldExpandOrCollapse = shouldExpand || shouldCollapse
+    if (!shouldExpandOrCollapse) return
     
     // collapse all submenus on the current level before expanding the new one
     itemParentMenu.items.forEach(i => i.collapse && i.collapse('none'))
@@ -166,22 +171,15 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
 
   // register the mouse events
   if (!attachedMenu) return
-  const mouseEvents = clickEnabled ? ['click'] : ['mouseenter', 'mouseleave']
+  const isToggler = element === (toggler && toggler.element)
+  const mouseEvents = clickEnabled || isToggler ? ['click'] : ['mouseenter', 'mouseleave']
   const elements = [element, attachedMenu.element]
   mouseEvents.forEach(event => elements.forEach(el => {
-    if (el === toggler.element) return
-    addEvent(overallMenu, {
-      element: el,
-      event,
-      callback: mouseNavigation
-    })
+      addEvent(overallMenu, {
+        element: el,
+        event,
+        callback: mouseNavigation
+      })
   }))
-
-  // register toggler click event separately
-  addEvent(overallMenu, {
-    element: toggler.element,
-    event: 'click',
-    callback: mouseNavigation,
-  })
 
 }
