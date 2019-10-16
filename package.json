@@ -35,6 +35,7 @@
       "@babel/preset-env"
     ]
   },
+  "browserslist": "> 0.25%, not dead",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jonathandewitt-dev/make-menu-accessible.git"

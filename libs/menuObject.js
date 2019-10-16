@@ -72,7 +72,7 @@ export default {
     const {submenuSelector} = options
 
     // find the submenu that belongs to this item, if any
-    const siblings = [...itemElement.parentElement.children]
+    const siblings = Array.from(itemElement.parentElement.children)
     const nextSibling = itemElement.nextElementSibling
     const nextSiblingIsSubmenu = nextSibling && nextSibling.matches(submenuSelector)
     const submenuElement =
