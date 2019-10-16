@@ -116,9 +116,9 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
     const collapsePref = collapseNext ? 'next' : collapsePrev ? 'prev' : 'current'
 
     // focus within the submenu when a default key is pressed--
-    // ONLY if the menu has previously been expanded
+    // ONLY if the parent item is not an active link OR has previously been expanded
     const expandDefault = expandKeys.defaultKeys.includes(event.key)
-    const checkExpanded = haspopup && !isExpanded
+    const checkExpanded = haspopup && !isExpanded && element.href
     const expandDefaultArg = checkExpanded ? 'none' : 'first'
     const expandArg = expandDefault ? expandDefaultArg : expandPref
     
