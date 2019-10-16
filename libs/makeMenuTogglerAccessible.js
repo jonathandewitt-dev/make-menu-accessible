@@ -25,6 +25,7 @@ export default (menu, customCallback) => {
     const tabindex = showToggler ? '0' : '-1'
     togglerElement.setAttribute('tabindex', tabindex)
     togglerElement.setAttribute('aria-hidden', String(!showToggler))
+    togglerElement.setAttribute('aria-expanded', String(!showToggler))
     element.setAttribute('aria-hidden', String(showToggler))
   }
   

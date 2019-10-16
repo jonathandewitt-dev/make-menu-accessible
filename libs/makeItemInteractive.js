@@ -172,8 +172,9 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
   // register the mouse events
   if (!attachedMenu) return
   const isToggler = element === (toggler && toggler.element)
-  const mouseEvents = clickEnabled || isToggler ? ['click'] : ['mouseenter', 'mouseleave']
-  const elements = [element, attachedMenu.element]
+  const useClick = clickEnabled || isToggler
+  const mouseEvents = useClick ? ['click'] : ['mouseenter', 'mouseleave']
+  const elements = useClick ? [element] : [element, attachedMenu.element]
   mouseEvents.forEach(event => elements.forEach(el => {
       addEvent(overallMenu, {
         element: el,
