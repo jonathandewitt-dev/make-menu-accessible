@@ -73,7 +73,10 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
       {nextKeys: [], prevKeys: []}
 
     // check if the key pressed should use default behavior
-    const shouldUseDefault = element.href && defaultKeys.includes(event.key)
+    const haspopup = element.getAttribute('aria-haspopup') === 'true'
+    const isExpanded = element.getAttribute('aria-expanded') === 'true'
+    const checkPopup = haspopup ? isExpanded : true
+    const shouldUseDefault = element.href && checkPopup && defaultKeys.includes(event.key)
     if (shouldUseDefault) return event.key === 'Tab' && collapseAll(false)
     event.preventDefault()
     event.stopPropagation()
@@ -111,12 +114,19 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
     const collapseNext = collapseKeyMap.nextKeys.includes(event.key)
     const collapsePrev = collapseKeyMap.prevKeys.includes(event.key)
     const collapsePref = collapseNext ? 'next' : collapsePrev ? 'prev' : 'current'
+
+    // focus within the submenu when a default key is pressed--
+    // ONLY if the menu has previously been expanded
+    const expandDefault = expandKeys.defaultKeys.includes(event.key)
+    const checkExpanded = haspopup && !isExpanded
+    const expandDefaultArg = checkExpanded ? 'none' : 'first'
+    const expandArg = expandDefault ? expandDefaultArg : expandPref
     
     // expand or collapse as dictated above
     if (expandPref) {
       if (menuParentMenu) menuParentMenu.anySubmenuIsExpanded = true
       return item.expand ?
-        item.expand(expandPref) :
+        item.expand(expandArg) :
         parentItem && parentItem.collapse(collapsePref)
     }
 
