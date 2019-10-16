@@ -10,6 +10,7 @@
 .submenu,
 .menuItem {
   list-style: none;
+  list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
   margin: 0;
   padding: 0;
 }
