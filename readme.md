@@ -245,7 +245,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 **KEYBOARD NAVIGATION**
   1. After focus is brought to the menu, the user may browse through each item in the current menu by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.  Pressing tab will collapse all menus and move to the next focusable item on the page.
-  2. Submenus can be expanded by hitting enter/return or the space bar.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
+  2. Submenus can be expanded by hitting enter/return or the space bar.  If the parent item is also an active link, then enter key will follow the link only if it's already been expanded.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
   3. If a menu item is or has a link with a valid href, hitting enter or space will trigger a link click.
   4. If a menu is expanded and the user hits an arrow key in a direction where no navigation is possible and no items can be expanded, it will collapse the current menu and bring the focus to the next *parent* item.  When an item is collapsed in this way, all parent items will expand automatically as the user navigates, until the escape key is pressed.
   5. Submenus can be collapsed by hitting the escape key.
@@ -253,8 +253,8 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets a half-second after the user stops typing, so a new filter can be typed.
 
 **MOUSE NAVIGATION**
-  1. When hovering over an item with a submenu, the menu expands.
-  2. After the cursor leaves an item or its submenu, it will collapse with a 50 millisecond delay to account for any margins.
+  1. When hovering over an item with a submenu, the menu expands by default.  After the cursor leaves an item or its submenu, it will collapse with a 50 millisecond delay to account for any margins.
+  2. The options can be adjusted to expand on click instead of hover.  If mobile options are provided, the default for the menu at the mobile screen-size is click.  See [mouse options](#mouse-options) for more details.
 
 **FLEXIBILITY**
 
