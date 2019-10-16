@@ -263,7 +263,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 WHAT IT DOES *NOT* DO
 ===
-This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
+This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.  This is a deliberate choice, because this package is only meant to provide accessible functionality in a way that can be flexibly applied to any existing project regardless of its stylesheet.  It's best to honor the [separation of concerns](https://medium.com/machine-words/separation-of-concerns-1d735b703a60) and avoid interfering with the individual developer by making any decisions for them.
 
 You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
 
@@ -276,7 +276,7 @@ You can easily apply styles to work in conjunction with this menu, by selecting 
   display: block;
 }
 
-.menuItem[aria-expanded="true"]::after {
+.menuItem[aria-haspopup="true"]::after {
   content: ' \25BE'; /* downward-facing trangle */
 }
 ```
