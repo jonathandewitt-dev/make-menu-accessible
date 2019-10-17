@@ -253,7 +253,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets a half-second after the user stops typing, so a new filter can be typed.
 
 **MOUSE NAVIGATION**
-  1. When hovering over an item with a submenu, the menu expands by default.  After the cursor leaves an item or its submenu, it will collapse with a 50 millisecond delay to account for any margins.
+  1. When hovering over an item with a submenu, the menu expands by default.  After the cursor leaves an item or its submenu, it will collapse with a 100 millisecond delay to account for any margins.
   2. The options can be adjusted to expand on click instead of hover.  If mobile options are provided, the default for the menu at the mobile screen-size is click.  See [mouse options](#mouse-options) for more details.
 
 **FLEXIBILITY**

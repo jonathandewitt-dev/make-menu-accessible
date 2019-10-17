@@ -165,7 +165,7 @@ export default (item, options, overallMenu, customCallback = () => {}) => {
     // expand or wait 50 milliseconds to collapse
     clearTimeout(item.hoverTimeout)
     if (shouldExpand) method()
-    else item.hoverTimeout = setTimeout(method, 50)
+    else item.hoverTimeout = setTimeout(method, 100)
 
     // only allow default click if the menu was already expanded
     if (!isExpanded && isClicking) event.preventDefault()
