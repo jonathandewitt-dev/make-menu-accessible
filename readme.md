@@ -180,9 +180,39 @@ But wait, one of the most common formats on the web is to use a toggle button *s
 * Just like the menus, possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
 * You may also use a fourth argument in the shorthand syntax `data-mobile`, instead of `data-mobile-toggler`.  e.g. `data-mobile="vertical left 500 true"`.
 
-THE KEYDOWN EVENT
+MOUSE OPTIONS
 ===
-This function uses `event.stopPropagation()` on the `'keydown'` event in order to run properly, avoiding multiple triggers on all the element's parents.  If you need to add another callback to the `'keydown'` event on any menu item, you can use the second argument of the main function to feed it your custom callback.  If you give your callback a return value of false, it will not run the rest of the callback set by this package.  If you don't provide any return value, it defaults to true.
+The default behavior is to expand a menu when the mouse hovers over the parent item.  If your menu items should expand or collapse on clicks (or taps) instead, you can use `data-click="true"`.  If this is set to true, parent items that double as links will only follow the link on the second click.
+
+```html
+<nav class="menu"
+     data-click="true"
+>
+  <!-- ... -->
+</nav>
+```
+
+Again there is a mobile option for this called `data-mobile-click`, and the default for this is true, because devices at that size are likely to have touch screens.  Remember, this will only become active if you provide a `mobile-width`.
+
+```html
+<nav class="menu"
+     data-mobile-click="true"
+>
+  <!-- ... -->
+</nav>
+```
+
+* Even still, you may use the shorthand by passing a fifth argument to `data-mobile`, instead of `data-mobile-click`.  e.g. `data-mobile="vertical left 500 true true"`.
+
+THE BROWSER EVENTS
+===
+This function may use `event.stopPropagation()` on any one of the following events in order to run properly, avoiding multiple triggers on all the element's parents.
+  - `'keydown'`
+  - `'click'`
+  - `'mouseenter'`
+  - `'mouseleave'`
+
+If you need to add another callback to one of these events on any menu item, you can use the second argument of the main function to feed it your custom callback.  You can determine which event is being intercepted by checking `event.type`.  If you give your callback a return value of false, it will cancel the rest of the event listener added by this package.  If you don't provide any return value, it defaults to true.
 
 ```js
 import makeMenuAccessible from 'make-menu-accessible'
@@ -192,10 +222,9 @@ const menuElement = document.querySelector('.menu')
 /* ... */
 
 makeMenuAccessible(menuElement, event => {
-  event.preventDefault()
-  if (someCondition) {
+  if (event.type === 'keydown') {
     alert('My custom "keydown" callback')
-    return false
+    return false // cancels the package's callback
   }
 })
 ```
@@ -228,12 +257,16 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 **KEYBOARD NAVIGATION**
   1. After focus is brought to the menu, the user may browse through each item in the current menu by using the arrow keys in the logical direction.  When the end or beginning of the list is reached, the focus will wrap around to the other side.  Pressing tab will collapse all menus and move to the next focusable item on the page.
-  2. Submenus can be expanded by hitting enter/return or the space bar.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
+  2. Submenus can be expanded by hitting enter/return or the space bar.  If the parent item is also an active link, then enter key will follow the link only if it's already been expanded.  Submenus can also be expanded by hitting the arrow key in the logical direction.  If an arrow key opposite of the logical direction is pressed, the menu is expanded and focus is brought to the last item.
   3. If a menu item is or has a link with a valid href, hitting enter or space will trigger a link click.
   4. If a menu is expanded and the user hits an arrow key in a direction where no navigation is possible and no items can be expanded, it will collapse the current menu and bring the focus to the next *parent* item.  When an item is collapsed in this way, all parent items will expand automatically as the user navigates, until the escape key is pressed.
   5. Submenus can be collapsed by hitting the escape key.
   6. Go to the first item in a menu by hitting the home or page up keys.  Conversely, go to the last item in a menu by hitting end or page down.
   7. Focus directly on an item by hitting any alphanumeric key.  Continue typing to narrow the result further.  The filter resets a half-second after the user stops typing, so a new filter can be typed.
+
+**MOUSE NAVIGATION**
+  1. When hovering over an item with a submenu, the menu expands by default.  After the cursor leaves an item or its submenu, it will collapse with a 100 millisecond delay to account for any margins.
+  2. The options can be adjusted to expand on click instead of hover.  If mobile options are provided, the default for the menu at the mobile screen-size is click.  See [mouse options](#mouse-options) for more details.
 
 **FLEXIBILITY**
 
@@ -242,7 +275,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
 
 WHAT IT DOES *NOT* DO
 ===
-This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.
+This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.  This is a deliberate choice, because this package is only meant to provide accessible functionality in a way that can be flexibly applied to any existing project regardless of its stylesheet.  It's best to honor the [separation of concerns](https://medium.com/machine-words/separation-of-concerns-1d735b703a60) and avoid interfering with the individual developer by making any decisions for them.
 
 You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
 
@@ -255,7 +288,7 @@ You can easily apply styles to work in conjunction with this menu, by selecting 
   display: block;
 }
 
-.menuItem[aria-expanded="true"]::after {
+.menuItem[aria-haspopup="true"]::after {
   content: ' \25BE'; /* downward-facing trangle */
 }
 ```

@@ -1,4 +1,5 @@
 import makeMenuAccessible from '../src/index.js'
+// const makeMenuAccessible = MakeMenuAccessible.default
 
 const menu = document.querySelector('.mainMenu')
 const menu2 = document.querySelector('.mainMenu2')
