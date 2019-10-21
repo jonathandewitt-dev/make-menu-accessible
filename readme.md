@@ -8,7 +8,7 @@ Skip to...
 * [The Browser Events](#the-browser-events)
 * [Labels](#labels)
 * [Features](#features)
-* [What it does *not* do](#what-it-does-not-do)
+* [What It Does *Not* Do](#what-it-does-not-do)
 
 QUICK START
 ===
