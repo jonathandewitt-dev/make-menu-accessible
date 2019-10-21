@@ -1,14 +1,14 @@
 Skip to...
-[Quick Start](#quick-start)
-[Using Without Modules](#using-without-modules)
-[Custom Selectors](#custom-selectors)
-[Custom Layout](#custom-layout)
-[Menu Toggler](#menu-toggler)
-[Mouse Options](#mouse-options)
-[The Browser Events](#the-browser-events)
-[Labels](#labels)
-[Features](#features)
-[What it does *not* do](#what-it-does-not-do)
+* [Quick Start](#quick-start)
+* [Using Without Modules](#using-without-modules)
+* [Custom Selectors](#custom-selectors)
+* [Custom Layout](#custom-layout)
+* [Menu Toggler](#menu-toggler)
+* [Mouse Options](#mouse-options)
+* [The Browser Events](#the-browser-events)
+* [Labels](#labels)
+* [Features](#features)
+* [What it does *not* do](#what-it-does-not-do)
 
 QUICK START
 ===
