@@ -101,6 +101,7 @@ const makeMenuAccessible = (element, customCallback) => {
     removeAllEvents(menu)
     menuObject.menus = menuObject.menus.filter(m => m.overallMenu !== menu)
     makeMenuAccessible(element, customCallback)
+    menuObserver.disconnect()
   })
   menuObserver.observe(element, observerConfig)
 }
