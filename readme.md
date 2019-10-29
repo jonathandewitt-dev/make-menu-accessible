@@ -1,3 +1,15 @@
+Skip to...
+* [Quick Start](#quick-start)
+* [Using Without Modules](#using-without-modules)
+* [Custom Selectors](#custom-selectors)
+* [Custom Layout](#custom-layout)
+* [Menu Toggler](#menu-toggler)
+* [Mouse Options](#mouse-options)
+* [The Browser Events](#the-browser-events)
+* [Labels](#labels)
+* [Features](#features)
+* [What It Does *Not* Do](#what-it-does-not-do)
+
 QUICK START
 ===
 In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.
@@ -28,7 +40,7 @@ const menuElement = document.querySelector('.menu')
 makeMenuAccessible(menuElement)
 ```
 
-That's it!  If your menu is a standard format and non-responsive, you now have an accessible menu.  If it is *not* the average conventional navigation menu, have no fear, there's plenty of options available to cater to your needs.  Read on to see what they are.
+That's it!  If your menu is a standard format and you used the default classes, you now have an accessible menu.  If your menu deviates from the standard or it is mobile responsive, have no fear, there's plenty of options available to cater to your needs.  Read on to see what they are.
 
 **Note:** the main function is both a *named* and *default* export, so you have the option of importing it as any name that fits your project's namespace.  Both `import yourFnName from 'make-menu-accessible'` and `import {makeMenuAccessible} from 'make-menu-accessible'` are valid.
 
