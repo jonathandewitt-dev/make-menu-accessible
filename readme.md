@@ -1,7 +1,8 @@
 # Make Menu Accessible
 
 ```diff
-- DEPRECATED: This package will no longer be maintained because a better way to accomplish these concepts has been published.
+- DEPRECATED: This package will no longer be maintained.
+- A better way to accomplish these concepts has been published.
 + Please refer to the NPM documentation of accessibility-layer to learn more.
 ```
 Read more: [accessibility-layer](https://www.npmjs.com/package/accessibility-layer)
