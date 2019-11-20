@@ -1,3 +1,7 @@
+# Make Menu Accessible
+
+***DEPRECATED***: This package will no longer be maintained because a better way to accomplish these concepts has been published.  Please refer to the documentation of [accessibility-layer](https://www.npmjs.com/package/accessibility-layer) to learn more.
+
 Skip to...
 * [Quick Start](#quick-start)
 * [Using Without Modules](#using-without-modules)
@@ -10,8 +14,7 @@ Skip to...
 * [Features](#features)
 * [What It Does *Not* Do](#what-it-does-not-do)
 
-QUICK START
-===
+## QUICK START
 In its simplest form, this package can be used by just importing the function and running any element through it.  This process automatically converts the element into an accessible aria menu with keyboard navigation.  The default settings expect your menu items to have a class of `menuItem` and your submenus to have a class of `submenu`, but these settings may be adjusted to fit your project.
 
 **Remember**: this does *not* toggle the visibility of expanded menus, [skip to the end](#what-it-does-not-do) to see why.
@@ -44,8 +47,7 @@ That's it!  If your menu is a standard format and you used the default classes, 
 
 **Note:** the main function is both a *named* and *default* export, so you have the option of importing it as any name that fits your project's namespace.  Both `import yourFnName from 'make-menu-accessible'` and `import {makeMenuAccessible} from 'make-menu-accessible'` are valid.
 
-USING WITHOUT MODULES
-===
+## USING WITHOUT MODULES
 Maybe you have a project that doesn't play nice with ES6 module imports or Node's `require`, or you just want to play around with this in a sandbox like [jsfiddle](https://jsfiddle.net) or [codepen](https://codepen.io/pen/).  In that case, just add a script tag instead, but beware, this will add the module as a named object on the global scope.  You can use [unpkg](https://unpkg.com) to grab a CDN of this package, like so.
 
 ```html
@@ -59,7 +61,7 @@ Maybe you have a project that doesn't play nice with ES6 module imports or Node'
 </script>
 ```
 
-CUSTOM SELECTORS
+## CUSTOM SELECTORS
 ===
 A common case is that your menu probably does not use the default classes.  You could adjust your markup and add the classes, but who wants to do that?  Your menu has a structure already, it's likely that there's already a class in place for all your items and submenus.  That's where a set of custom attributes come in.  `data-item-selector` and `data-submenu-selector` should be given any valid query selector, and the main function will use it as a hook for all functionality provided by this package.
 
@@ -97,8 +99,7 @@ Using these, the function is generally pretty good at figuring out how your menu
 </ul>
 ```
 
-CUSTOM LAYOUT
-===
+## CUSTOM LAYOUT
 As much effort as I put in to avoid requiring much extra work from the developer, there are certain cases that would change the behavior of the menu.  What if this was a sidebar?  And what if one project has a left sidebar, and the other has a right sidebar?  Well, fortunately, you still don't have to add very much to your markup.
 
 If your menu contains items that are visually stacked on the left side, you can just add `data-layout` and `data-alignment` to help the function better handle your menu.
@@ -149,8 +150,7 @@ Even so, this works for one particular layout at a time, but what if you want yo
 * `data-mobile-width` takes any plain number value, representing the viewport width in pixels.
 * You may also use the shorthand syntax, `data-mobile`, where you provide three values separated by a space representing `layout`, `alignment`, and `width` respectively.  e.g. `data-mobile="vertical left 500"`.
 
-MENU TOGGLER
-===
+## MENU TOGGLER
 Okay, so your menu is hidden by a toggle button, what now?  Well, good news, this package can handle that too.  Just give your toggler a unique ID and assign the value of your menu's `data-menu-toggler` to that same ID.
 
 ```html
@@ -180,8 +180,7 @@ But wait, one of the most common formats on the web is to use a toggle button *s
 * Just like the menus, possible values of `data-alignment` are `left`, `right`, `top`, and `bottom`.
 * You may also use a fourth argument in the shorthand syntax `data-mobile`, instead of `data-mobile-toggler`.  e.g. `data-mobile="vertical left 500 true"`.
 
-MOUSE OPTIONS
-===
+## MOUSE OPTIONS
 The default behavior is to expand a menu when the mouse hovers over the parent item.  If your menu items should expand or collapse on clicks (or taps) instead, you can use `data-click="true"`.  If this is set to true, parent items that double as links will only follow the link on the second click.
 
 ```html
@@ -204,8 +203,7 @@ Again there is a mobile option for this called `data-mobile-click`, and the defa
 
 * Even still, you may use the shorthand by passing a fifth argument to `data-mobile`, instead of `data-mobile-click`.  e.g. `data-mobile="vertical left 500 true true"`.
 
-THE BROWSER EVENTS
-===
+## THE BROWSER EVENTS
 This function may use `event.stopPropagation()` on any one of the following events in order to run properly, avoiding multiple triggers on all the element's parents.
   - `'keydown'`
   - `'click'`
@@ -229,8 +227,7 @@ makeMenuAccessible(menuElement, event => {
 })
 ```
 
-LABELS
-===
+## LABELS
 So you know it's good to label your menu, but what are the rules?  Well, this function again tries to go the extra mile and do it for you.  When labelling each menu or submenu, this function searches for a heading tag nested inside.  If it finds one, it will automatically set the `aria-labelledby` attribute on your menu.  If no heading tag is found, it will look for the parent item's text and use it as the `aria-label`, (which may be the menu toggle button if it is not a submenu.)  If there is no parent item, it will fall back on the default `'Site Menu'`.  You can also override all of that if you'd like to assign a name manually by adding the `data-name` attribute.  In most cases, you can omit this attribute and the label will be automatically applied.
 
 ```html
@@ -241,8 +238,7 @@ So you know it's good to label your menu, but what are the rules?  Well, this fu
 </nav>
 ```
 
-FEATURES
-===
+## FEATURES
 So all of that is great for setting up, but what does it actually do?  Well, a lot of things, actually.
 
 **ATTRIBUTES**
@@ -273,8 +269,7 @@ So all of that is great for setting up, but what does it actually do?  Well, a l
   1. Ideally, this function should work with any menu structure you prefer.  That means it's pretty good at figuring out whether or not you're using [listless navigation](https://css-tricks.com/navigation-in-lists-to-be-or-not-to-be/), where your navigation links are actually nested, and in most cases it should just work out of the box.  Even if your menu items are nested several layers deep inside your submenu, the code is built to ignore any parents that are not a submenu and make any associations from there.
   2. Hopefully your menu will be readily loaded by the time you run this function, but sometimes it's unavoidable and items may be dynamically added to or removed from your menu.  If this is the case, this function will adapt accordingly by watching the DOM for changes, then respond by automatically resetting the element and rerunning the function again with your original arguments.
 
-WHAT IT DOES *NOT* DO
-===
+## WHAT IT DOES *NOT* DO
 This package assumes you will provide all the styles for your menu.  **This function will not visually show or hide your elements**, it will only show or hide them from screen readers for accessibility's sake.  The visual part is up to you.  This is a deliberate choice, because this package is only meant to provide accessible functionality in a way that can be flexibly applied to any existing project regardless of its stylesheet.  It's best to honor the [separation of concerns](https://medium.com/machine-words/separation-of-concerns-1d735b703a60) and avoid interfering with the individual developer by making any decisions for them.
 
 You can easily apply styles to work in conjunction with this menu, by selecting the added aria attributes.  For example, here are a couple of the most common uses.
