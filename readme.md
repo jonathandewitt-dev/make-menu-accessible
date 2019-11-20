@@ -1,6 +1,10 @@
 # Make Menu Accessible
 
-***DEPRECATED***: This package will no longer be maintained because a better way to accomplish these concepts has been published.  Please refer to the documentation of [accessibility-layer](https://www.npmjs.com/package/accessibility-layer) to learn more.
+```diff
+- DEPRECATED: This package will no longer be maintained because a better way to accomplish these concepts has been published.
++ Please refer to the NPM documentation of accessibility-layer to learn more.
+```
+Read more: [accessibility-layer](https://www.npmjs.com/package/accessibility-layer)
 
 Skip to...
 * [Quick Start](#quick-start)
